@@ -18,8 +18,8 @@ namespace MPplaylist.Models
         {
             if (Playlists.Any(p => p.Name == playlist.Name))
             {
-                //TODO: add error log
-                return;
+                var message = $"Playlist with name \"{playlist.Name}\" already exists.";
+                throw new ArgumentException(message);
             }
             Playlists.Add(playlist);
         }
@@ -38,8 +38,8 @@ namespace MPplaylist.Models
         {
             if (!Playlists.Any(p => p.Name == playlist.Name))
             {
-                //TODO: add error log
-                return;
+                var message = $"Playlist \"{playlist.Name}\" was not found.";
+                throw new ArgumentException(message);
             }
             Playlists.Remove(playlist);
         }

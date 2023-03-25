@@ -23,8 +23,8 @@ namespace MPplaylist.Models
         {
             if (Routes.Any(r => r.Id == route.Id))
             {
-                //TODO: add error logging
-                return;
+                var message = $"Route \"{route.Name}\" is already in this playlist.";
+                throw new ArgumentException(message);
             }
 
             Routes.Add(route);
@@ -34,8 +34,8 @@ namespace MPplaylist.Models
         {
             if (!Routes.Any(r => r.Id == route.Id))
             {
-                //TODO: add error logging
-                return;
+                var message = $"Route \"{route.Name}\" was not found.";
+                throw new ArgumentException(message);
             }
             Routes.Remove(route);
         }
