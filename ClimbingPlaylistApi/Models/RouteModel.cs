@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MPplaylist.Models
 {
+    /// <summary>
+    /// Model for a climbing route
+    /// </summary>
     public class RouteModel : IRouteModel
     {
         public RouteModel(string name, int id, string url)

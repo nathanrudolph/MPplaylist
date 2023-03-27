@@ -21,6 +21,9 @@ namespace MPplaylist.Database
             DbPath = System.IO.Path.Join(path,"MpApi.db");
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlite($"Data Source={DbPath}");
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            options.UseSqlite($"Data Source={DbPath}");
+        }
     }
 }

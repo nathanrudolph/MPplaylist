@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MPplaylist", "MPplaylist.csproj", "{D88814F0-53A0-4F81-8E48-418BE8D5B35F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClimbingPlaylistApi", "ClimbingPlaylistApi\ClimbingPlaylistApi.csproj", "{101FF4EE-566A-46AF-A0F0-4B317D433E7E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClimbingPlaylistApiTest", "ClimbingPlaylistApiTest\ClimbingPlaylistApiTest.csproj", "{86968C66-1FB0-4578-BF4F-ACE9F169B511}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D88814F0-53A0-4F81-8E48-418BE8D5B35F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D88814F0-53A0-4F81-8E48-418BE8D5B35F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D88814F0-53A0-4F81-8E48-418BE8D5B35F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D88814F0-53A0-4F81-8E48-418BE8D5B35F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{101FF4EE-566A-46AF-A0F0-4B317D433E7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{101FF4EE-566A-46AF-A0F0-4B317D433E7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{101FF4EE-566A-46AF-A0F0-4B317D433E7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{101FF4EE-566A-46AF-A0F0-4B317D433E7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86968C66-1FB0-4578-BF4F-ACE9F169B511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86968C66-1FB0-4578-BF4F-ACE9F169B511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86968C66-1FB0-4578-BF4F-ACE9F169B511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86968C66-1FB0-4578-BF4F-ACE9F169B511}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,49 +5,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MountainProjectAPI;
+using MPplaylist.Models;
 
 namespace ClimbingPlaylistApi.Services
 {
-    public class MpScraper
+    /// <summary>
+    /// Wrapper for separate MountainProjectAPI: https://github.com/derekantrican/MountainProject
+    /// </summary>
+    public static class MpScraper
     {
-        public List<string> Urls { get; set; }
-        public List<Route> Routes { get; set; }
-
-        public MpScraper()
+        //Note that this class is a wrapper for a separate open-source library, class names from that project shouldn't creep outside this class
+        public static RouteModel GetRouteFromUrl(string url)
         {
-            Urls = new List<string>();
-            Routes = new List<Route>();
-        }
-
-        public void AddUrl(string inputURL)
-        {
-            Urls.Add(inputURL);
-        }
-
-        public async Task GetRoutesFromURLsAsync()
-        {
-            var tasks = new List<Task>();
-            foreach (string url in Urls)
+            if (string.IsNullOrEmpty(url) || !url.Contains("route"))
             {
-                Route current = await GetRouteFromUrlAsync(url);
-                Routes.Add(current);
+                throw new ArgumentException("Url is not a valid MP route page.");
             }
-        }
-
-        private async Task<Route> GetRouteFromUrlAsync(string inputURL)
-        {
-            if (string.IsNullOrEmpty(inputURL) || !inputURL.Contains("route"))
+            if (!MountainProjectAPI.Url.Contains(url, Utilities.MPBASEURL))
             {
-                throw new ArgumentException();
+                url = MountainProjectAPI.Url.BuildFullUrl(Utilities.MPBASEURL + url);
             }
-            if (!MountainProjectAPI.Url.Contains(inputURL, Utilities.MPBASEURL))
-            {
-                inputURL = MountainProjectAPI.Url.BuildFullUrl(Utilities.MPBASEURL + inputURL);
-            }
-            Route route = new Route();
-            route = new Route { ID = Utilities.GetID(inputURL) };
+            MountainProjectAPI.Route route = new MountainProjectAPI.Route();
+            route = new MountainProjectAPI.Route { ID = Utilities.GetID(url) };
             Parsers.ParseRouteAsync(route).Wait();
-            return route;
+            
+            RouteModel output = BuildRouteModelFromScrapedRoute(route);
+            return output;
+        }
+
+        private static RouteModel BuildRouteModelFromScrapedRoute(MountainProjectAPI.Route route)
+        {
+            return new RouteModel(route.Name, Int32.Parse(route.ID), route.URL)
+            {
+                Height = (int?)route.Height.GetValue(Dimension.Units.Feet),
+                Grade = route.GetRouteGrade().ToString(),
+                Type = route.TypeString,
+                Description = route.AdditionalInfo,
+                Rating = route.Rating
+            };
         }
     }
 }
