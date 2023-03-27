@@ -6,16 +6,24 @@ using System.Threading.Tasks;
 
 namespace MPplaylist.Models
 {
-    public struct RouteModel : IRouteModel
+    public class RouteModel : IRouteModel
     {
-        public string Name { get; init; }
-        public string Id { get; init; }
-        public string Url { get; init; }
-        public string? Type { get; init; }
-        public string? Description { get; init; }
-        public string? Grade { get; init; }
-        public double? Rating { get; init; }
-        public string? Area { get; init; }
-        public int? Height { get; init; }
+        public RouteModel(string name, int id, string url)
+        {
+            this.Name = name;
+            this.Id = id;
+            this.Url = url;
+        }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Url { get; set; }
+        public string? Type { get; set; }
+        public string? Description { get; set; }
+        public string? Grade { get; set; }
+        public double? Rating { get; set; }
+        public string? Area { get; set; }
+        public int? Height { get; set; }
+
+        //TODO: switch to record
     }
 }

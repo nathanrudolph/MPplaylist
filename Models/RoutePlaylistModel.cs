@@ -10,7 +10,7 @@ namespace MPplaylist.Models
     {
         public RoutePlaylistModel(string name = "New List")
         {
-            Id = 0; //TODO: generate/validate unique Id
+            Id = 0; //TODO: generate/validate primary key
             Name = name;
             Routes = new List<RouteModel>();
         }
@@ -42,6 +42,7 @@ namespace MPplaylist.Models
 
         public void Rename(string newName)
         {
+            //TODO: check if new playlist name already exists
             Name = newName;
         }
     }

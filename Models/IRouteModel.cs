@@ -8,14 +8,16 @@ namespace MPplaylist.Models
 {
     public interface IRouteModel
     {
-        string Name { get; init; }
-        string Id { get; init; }
-        string Url { get; init; }
-        string? Type { get; init; }
-        string? Description { get; init; }
-        string? Grade { get; init; }
-        double? Rating { get; init; }
-        string? Area { get; init; }
-        int? Height { get; init; }
+        int Id { get; set; }
+        string Name { get; set; }
+        string Url { get; set; }
+        string? Type { get; set; }
+        string? Description { get; set; }
+        string? Grade { get; set; }
+        double? Rating { get; set; }
+        string? Area { get; set; }
+        int? Height { get; set; }
+
+        //TODO: add validator for Id/Name/Url
     }
 }
