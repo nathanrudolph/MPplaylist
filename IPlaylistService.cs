@@ -11,7 +11,7 @@ namespace MPplaylist
     {
         AllPlaylistsModel PlaylistsModel { get; set; }
 
-        RoutePlaylistModel CurrentPlaylist { get; set; }
+        PlaylistModel CurrentPlaylist { get; set; }
 
         
     }

@@ -1,6 +1,6 @@
 ﻿namespace MPplaylist.Models
 {
-    public interface IRoutePlaylistModel
+    public interface IPlaylistModel
     {
         int Id { get; init; }
         string Name { get; set; }

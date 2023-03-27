@@ -2,10 +2,10 @@
 {
     public interface IAllPlaylistsModel
     {
-        List<RoutePlaylistModel> Playlists { get; set; }
+        List<PlaylistModel> Playlists { get; set; }
 
-        void Add (RoutePlaylistModel playlist);
-        void Remove (RoutePlaylistModel playlist);
+        void Add (PlaylistModel playlist);
+        void Remove (PlaylistModel playlist);
         void GetPlaylistNames();
         void GetPlaylist(string name);
     }

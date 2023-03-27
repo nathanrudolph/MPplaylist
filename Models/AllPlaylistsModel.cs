@@ -10,11 +10,11 @@ namespace MPplaylist.Models
     {
         public AllPlaylistsModel()
         {
-            Playlists = new List<RoutePlaylistModel>();
+            Playlists = new List<PlaylistModel>();
         }
-        public List<RoutePlaylistModel> Playlists { get; set; }
+        public List<PlaylistModel> Playlists { get; set; }
 
-        public void Add(RoutePlaylistModel playlist)
+        public void Add(PlaylistModel playlist)
         {
             if (Playlists.Any(p => p.Name == playlist.Name))
             {
@@ -34,7 +34,7 @@ namespace MPplaylist.Models
             throw new NotImplementedException();
         }
 
-        public void Remove(RoutePlaylistModel playlist)
+        public void Remove(PlaylistModel playlist)
         {
             if (!Playlists.Any(p => p.Name == playlist.Name))
             {

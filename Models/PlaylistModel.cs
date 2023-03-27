@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MPplaylist.Models
 {
-    public class RoutePlaylistModel : IRoutePlaylistModel
+    public class PlaylistModel : IPlaylistModel
     {
-        public RoutePlaylistModel(string name = "New List")
+        public PlaylistModel(string name = "New List")
         {
             Id = 0; //TODO: generate/validate primary key
             Name = name;

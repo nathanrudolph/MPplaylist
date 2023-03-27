@@ -8,12 +8,12 @@ using MountainProjectAPI;
 
 namespace MPplaylist
 {
-    public class MPWrapper
+    public class MpScraper
     {
         public List<string> Urls {get;set;}
         public List<Route> Routes {get; set;}
 
-        public MPWrapper()
+        public MpScraper()
         {
             this.Urls = new List<string>();
             this.Routes = new List<Route>();

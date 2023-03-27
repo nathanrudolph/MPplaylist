@@ -15,6 +15,6 @@ namespace MPplaylist
         }
 
         public AllPlaylistsModel PlaylistsModel { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public RoutePlaylistModel CurrentPlaylist { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public PlaylistModel CurrentPlaylist { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }
