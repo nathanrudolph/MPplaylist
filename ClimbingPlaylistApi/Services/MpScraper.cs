@@ -6,28 +6,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using MountainProjectAPI;
 
-namespace MPplaylist
+namespace ClimbingPlaylistApi.Services
 {
-    public class MPWrapper
+    public class MpScraper
     {
-        public List<string> Urls {get;set;}
-        public List<Route> Routes {get; set;}
+        public List<string> Urls { get; set; }
+        public List<Route> Routes { get; set; }
 
-        public MPWrapper()
+        public MpScraper()
         {
-            this.Urls = new List<string>();
-            this.Routes = new List<Route>();
+            Urls = new List<string>();
+            Routes = new List<Route>();
         }
 
         public void AddUrl(string inputURL)
         {
-            this.Urls.Add(inputURL);
+            Urls.Add(inputURL);
         }
 
         public async Task GetRoutesFromURLsAsync()
         {
             var tasks = new List<Task>();
-            foreach (string url in this.Urls)
+            foreach (string url in Urls)
             {
                 Route current = await GetRouteFromUrlAsync(url);
                 Routes.Add(current);
@@ -36,7 +36,7 @@ namespace MPplaylist
 
         private async Task<Route> GetRouteFromUrlAsync(string inputURL)
         {
-            if (String.IsNullOrEmpty(inputURL) || !inputURL.Contains("route"))
+            if (string.IsNullOrEmpty(inputURL) || !inputURL.Contains("route"))
             {
                 throw new ArgumentException();
             }
