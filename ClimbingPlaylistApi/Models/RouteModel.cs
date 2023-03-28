@@ -7,26 +7,37 @@ using System.Threading.Tasks;
 namespace MPplaylist.Models
 {
     /// <summary>
-    /// Model for a climbing route
+    /// Model for an individual climbing route
     /// </summary>
     public class RouteModel : IRouteModel
     {
-        public RouteModel(string name, int id, string url)
+        //TODO: switch to record
+        public RouteModel(string name, uint id, string url)
         {
             this.Name = name;
             this.Id = id;
             this.Url = url;
         }
-        public int Id { get; set; }
+        public uint Id { get; set; }
         public string Name { get; set; }
         public string Url { get; set; }
+        /// <summary>
+        /// Climbing types of the route (Sport, Trad, etc) joined in a single string
+        /// </summary>
         public string? Type { get; set; }
         public string? Description { get; set; }
+        /// <summary>
+        /// Climbing grade in YDS
+        /// </summary>
         public string? Grade { get; set; }
+        /// <summary>
+        /// Average user rating of the climb on a scale from 0-4
+        /// </summary>
         public double? Rating { get; set; }
-        public string? Area { get; set; }
+        /// <summary>
+        /// Route length in feet
+        /// </summary>
         public int? Height { get; set; }
-
-        //TODO: switch to record
+        public int? Popularity { get; set; }
     }
 }

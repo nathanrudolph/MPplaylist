@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClimbingPlaylistApi.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,46 +7,52 @@ using System.Threading.Tasks;
 
 namespace MPplaylist.Models
 {
-    internal class RouteModelGenerator
+    /// <summary>
+    /// Class to build a RouteModel
+    /// </summary>
+    internal static class RouteModelGenerator
     {
-        //pass in DbContext?
+        //pass in DbContext or delegate to add route to db
 
-        public RouteModel Generate(int id)
+        /// <summary>
+        /// Generates a RouteModel object for a given MP URL
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static RouteModel Generate(string url)
+        {
+            //TODO: validate URL?
+
+            uint id = GetIdFromUrl(url);
+            var route = GetRouteFromDb(id);
+            if (route.Id == 0)
+            {
+                route = GetRouteFromScraper(url);
+            }
+            return route;
+        }
+
+        private static RouteModel GetRouteFromDb(uint id) 
         {
             throw new NotImplementedException();
-            //check if Id is valid
-            
-            //check RouteCache db table
-            try
-            {
-                return GetRouteFromDb(id);
-            }
-            catch
-            {
-                //scrape from web
-            }
+            // query route from db
 
-            return new RouteModel();
+            // if not found, generate new route with id=0
         }
 
-        public RouteModel Generate(string url)
-        {
-            throw new NotImplementedException ();
-
-            //check if Id is valid
-
-            //get Id from url
-            int id = GetIdFromUrl(url);
-
-            return this.Generate(id);
-        }
-
-        private RouteModel GetRouteFromDb(int id) 
+        private static uint GetIdFromUrl(string url)
         {
             throw new NotImplementedException();
         }
 
-        private int GetIdFromUrl(string url)
+        private static RouteModel GetRouteFromScraper(string url)
+        {
+            var route = MpScraper.GetRouteFromUrl(url);
+            SaveRouteToDb(route);
+            return route;
+        }
+
+        private static void SaveRouteToDb(RouteModel routeModel)
         {
             throw new NotImplementedException();
         }

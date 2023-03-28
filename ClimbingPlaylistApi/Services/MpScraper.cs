@@ -10,7 +10,7 @@ using MPplaylist.Models;
 namespace ClimbingPlaylistApi.Services
 {
     /// <summary>
-    /// Wrapper for separate MountainProjectAPI: https://github.com/derekantrican/MountainProject
+    /// Wrapper for scraper from separate MountainProjectAPI: https://github.com/derekantrican/MountainProject
     /// </summary>
     public static class MpScraper
     {
@@ -29,8 +29,7 @@ namespace ClimbingPlaylistApi.Services
             route = new MountainProjectAPI.Route { ID = Utilities.GetID(url) };
             Parsers.ParseRouteAsync(route).Wait();
             
-            RouteModel output = BuildRouteModelFromScrapedRoute(route);
-            return output;
+            return BuildRouteModelFromScrapedRoute(route);
         }
 
         private static RouteModel BuildRouteModelFromScrapedRoute(MountainProjectAPI.Route route)
@@ -41,7 +40,8 @@ namespace ClimbingPlaylistApi.Services
                 Grade = route.GetRouteGrade().ToString(),
                 Type = route.TypeString,
                 Description = route.AdditionalInfo,
-                Rating = route.Rating
+                Rating = route.Rating,
+                Popularity = route.Popularity
             };
         }
     }
