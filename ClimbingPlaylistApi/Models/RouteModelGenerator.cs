@@ -1,4 +1,5 @@
-﻿using ClimbingPlaylistApi.Services;
+﻿using ClimbingPlaylistApi.Models;
+using ClimbingPlaylistApi.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,8 @@ namespace MPplaylist.Models
         /// <returns></returns>
         public static RouteModel Generate(string url)
         {
-            //TODO: validate URL?
-
-            uint id = GetIdFromUrl(url);
+            RouteUrl routeUrl = new RouteUrl(url);
+            uint id = routeUrl.GetRouteId();
             var route = GetRouteFromDb(id);
             if (route.Id == 0)
             {
@@ -38,11 +38,6 @@ namespace MPplaylist.Models
             // query route from db
 
             // if not found, generate new route with id=0
-        }
-
-        private static uint GetIdFromUrl(string url)
-        {
-            throw new NotImplementedException();
         }
 
         private static RouteModel GetRouteFromScraper(string url)
