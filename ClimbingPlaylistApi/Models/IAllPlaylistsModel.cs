@@ -1,4 +1,4 @@
-﻿namespace MPplaylist.Models
+﻿namespace ClimbingPlaylistApi.Models
 {
     public interface IAllPlaylistsModel
     {

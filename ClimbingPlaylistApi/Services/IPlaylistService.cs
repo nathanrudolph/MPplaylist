@@ -1,4 +1,4 @@
-﻿using MPplaylist.Models;
+﻿using ClimbingPlaylistApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

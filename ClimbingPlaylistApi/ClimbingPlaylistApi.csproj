@@ -15,8 +15,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="AngleSharp">
+      <HintPath>..\local packages\AngleSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Base">
+      <HintPath>..\local packages\Base.dll</HintPath>
+    </Reference>
     <Reference Include="MountainProjectAPI">
       <HintPath>..\local packages\MountainProjectAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\local packages\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
 

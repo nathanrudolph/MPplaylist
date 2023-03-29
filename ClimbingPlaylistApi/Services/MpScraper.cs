@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MountainProjectAPI;
-using MPplaylist.Models;
+using ClimbingPlaylistApi.Models;
 
 namespace ClimbingPlaylistApi.Services
 {
@@ -27,7 +27,7 @@ namespace ClimbingPlaylistApi.Services
             }
             MountainProjectAPI.Route route = new MountainProjectAPI.Route();
             route = new MountainProjectAPI.Route { ID = Utilities.GetID(url) };
-            Parsers.ParseRouteAsync(route).Wait();
+            Parsers.ParseRouteAsync(route,false).Wait();
             
             return BuildRouteModelFromScrapedRoute(route);
         }

@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MPplaylist.Models
+namespace ClimbingPlaylistApi.Models
 {
     /// <summary>
     /// Class to build a RouteModel
     /// </summary>
-    internal static class RouteModelGenerator
+    public static class RouteModelGenerator
     {
         //pass in DbContext or delegate to add route to db
 

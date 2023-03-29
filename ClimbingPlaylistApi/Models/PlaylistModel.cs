@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MPplaylist.Models
+namespace ClimbingPlaylistApi.Models
 {
     /// <summary>
     /// Model for a group of climbing routes

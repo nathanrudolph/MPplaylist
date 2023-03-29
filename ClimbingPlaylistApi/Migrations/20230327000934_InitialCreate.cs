@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace MPplaylist.Migrations
+namespace ClimbingPlaylistApi.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
