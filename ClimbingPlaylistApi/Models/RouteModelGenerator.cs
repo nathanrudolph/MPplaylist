@@ -1,4 +1,5 @@
-﻿using ClimbingPlaylistApi.Models;
+﻿using ClimbingPlaylistApi.Database;
+using ClimbingPlaylistApi.Models;
 using ClimbingPlaylistApi.Services;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,13 @@ namespace ClimbingPlaylistApi.Models
     /// </summary>
     public class RouteModelGenerator
     {
-        public RouteModelGenerator() 
+        public RouteModelGenerator(IDbService dbService) 
         {
             //pass in DbContext/DbService, or DI container, or delegate to add route to db
+            _dbService = dbService;
         }
+
+        private IDbService _dbService;
 
         /// <summary>
         /// Generates a RouteModel object for a given MP URL. Will only scrape from web if route is not already in db.
@@ -31,16 +35,23 @@ namespace ClimbingPlaylistApi.Models
             if (route.Id == 0)
             {
                 route = GetRouteFromScraper(url);
+                SaveRouteToDb(route);
             }
             return route;
         }
 
         private RouteModel GetRouteFromDb(uint id) 
         {
-            throw new NotImplementedException();
-            // query route from db
-
-            // if not found, generate new route with id=0
+            RouteModel route;
+            try
+            {
+                route = _dbService.GetRoute(id);
+            }
+            catch
+            {
+                route = new RouteModel("", 0, "");
+            }
+            return route;
         }
 
         private RouteModel GetRouteFromScraper(string url)
@@ -52,7 +63,7 @@ namespace ClimbingPlaylistApi.Models
 
         private void SaveRouteToDb(RouteModel routeModel)
         {
-            throw new NotImplementedException();
+            _dbService.AddRoute(routeModel);
         }
     }
 }

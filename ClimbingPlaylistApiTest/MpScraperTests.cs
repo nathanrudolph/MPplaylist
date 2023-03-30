@@ -14,7 +14,7 @@ namespace ClimbingPlaylistApiTest
     {
         [Theory]
         [MemberData(nameof(TestData))]
-        public void MpScraperShouldScrapeRoute(string expectedName, uint expectedId, string urlToScrape)
+        public void MpScraper_ShouldScrapeRoute(string expectedName, uint expectedId, string urlToScrape)
         {
             //Arrange
             RouteModel result;

@@ -3,33 +3,59 @@ using ClimbingPlaylistApi.Models;
 
 namespace ClimbingPlaylistApi.Services
 {
-    public class DbService
+    public class DbService : IDbService
     {
-        public DbService() 
+        public DbService(IPlaylistRepository playlistRepo, IRouteRepository routeRepo)
         {
             climbingDbContext = new ClimbingDbContext();
+            _playlistRepo = playlistRepo;
+            _routeRepo = routeRepo;
         }
 
+        private IPlaylistRepository _playlistRepo;
+        private IRouteRepository _routeRepo;
         private ClimbingDbContext climbingDbContext;
 
-        public void AddRouteToPlaylist(RouteModel route, PlaylistModel playlist)
+        public void AddPlaylist(PlaylistModel playlist)
         {
-            throw new NotImplementedException();
+            _playlistRepo.Add(playlist);
         }
 
-        public void RemoveRouteFromPlaylist(RouteModel route, PlaylistModel playlist)
+        public void UpdatePlaylist(int playlistId, PlaylistModel playlist)
         {
-            throw new NotImplementedException();
+            _playlistRepo.Update(playlistId, playlist);
         }
 
-        public void AddNewPlaylist(PlaylistModel playlist)
+        public void RemovePlaylist(PlaylistModel playlist)
         {
-
+            _playlistRepo.Remove(playlist);
         }
 
-        public void UpdatePlaylist(PlaylistModel playlist)
+        public PlaylistModel GetPlaylist(int playlistId)
         {
-            throw new NotImplementedException();
+            return _playlistRepo.Get(playlistId);
         }
+
+        public void AddRoute(RouteModel route)
+        {
+            _routeRepo.Add(route);
+        }
+
+        public void UpdateRoute(uint routeId, RouteModel route)
+        {
+            _routeRepo.Update(routeId, route);
+        }
+
+        public void RemoveRoute(RouteModel route)
+        {
+            _routeRepo.Remove(route);
+        }
+
+        public RouteModel GetRoute(uint routeId)
+        {
+            return _routeRepo.Get(routeId);
+        }
+
+
     }
 }
