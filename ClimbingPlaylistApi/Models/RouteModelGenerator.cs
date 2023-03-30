@@ -11,16 +11,19 @@ namespace ClimbingPlaylistApi.Models
     /// <summary>
     /// Class to build a RouteModel
     /// </summary>
-    public static class RouteModelGenerator
+    public class RouteModelGenerator
     {
-        //pass in DbContext or delegate to add route to db
+        public RouteModelGenerator() 
+        {
+            //pass in DbContext/DbService, or DI container, or delegate to add route to db
+        }
 
         /// <summary>
-        /// Generates a RouteModel object for a given MP URL
+        /// Generates a RouteModel object for a given MP URL. Will only scrape from web if route is not already in db.
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public static RouteModel Generate(string url)
+        public RouteModel Generate(string url)
         {
             RouteUrl routeUrl = new RouteUrl(url);
             uint id = routeUrl.GetRouteId();
@@ -32,7 +35,7 @@ namespace ClimbingPlaylistApi.Models
             return route;
         }
 
-        private static RouteModel GetRouteFromDb(uint id) 
+        private RouteModel GetRouteFromDb(uint id) 
         {
             throw new NotImplementedException();
             // query route from db
@@ -40,14 +43,14 @@ namespace ClimbingPlaylistApi.Models
             // if not found, generate new route with id=0
         }
 
-        private static RouteModel GetRouteFromScraper(string url)
+        private RouteModel GetRouteFromScraper(string url)
         {
             var route = MpScraper.GetRouteFromUrl(url);
             SaveRouteToDb(route);
             return route;
         }
 
-        private static void SaveRouteToDb(RouteModel routeModel)
+        private void SaveRouteToDb(RouteModel routeModel)
         {
             throw new NotImplementedException();
         }
