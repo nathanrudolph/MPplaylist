@@ -12,10 +12,10 @@ namespace ClimbingPlaylistApi.Services
     /// <summary>
     /// Wrapper for scraper from separate MountainProjectAPI: https://github.com/derekantrican/MountainProject
     /// </summary>
-    public static class MpScraper
+    public class MpScraper : IMpScraper
     {
         //Note that this class is a wrapper for a separate open-source library, class names from that project shouldn't creep outside this class
-        public static RouteModel GetRouteFromUrl(string url)
+        public RouteModel GetRouteFromUrl(string url)
         {
             if (string.IsNullOrEmpty(url) || !url.Contains("route"))
             {
@@ -27,12 +27,12 @@ namespace ClimbingPlaylistApi.Services
             }
             MountainProjectAPI.Route route = new MountainProjectAPI.Route();
             route = new MountainProjectAPI.Route { ID = Utilities.GetID(url) };
-            Parsers.ParseRouteAsync(route,false).Wait();
-            
+            Parsers.ParseRouteAsync(route, false).Wait();
+
             return BuildRouteModelFromScrapedRoute(route);
         }
 
-        private static RouteModel BuildRouteModelFromScrapedRoute(MountainProjectAPI.Route route)
+        private RouteModel BuildRouteModelFromScrapedRoute(MountainProjectAPI.Route route)
         {
             return new RouteModel(route.Name, uint.Parse(route.ID), route.URL)
             {

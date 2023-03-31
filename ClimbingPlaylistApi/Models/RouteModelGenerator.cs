@@ -14,13 +14,14 @@ namespace ClimbingPlaylistApi.Models
     /// </summary>
     public class RouteModelGenerator
     {
-        public RouteModelGenerator(IDbService dbService) 
+        public RouteModelGenerator(IDbService dbService, IMpScraper mpScraper) 
         {
-            //pass in DbContext/DbService, or DI container, or delegate to add route to db
             _dbService = dbService;
+            _mpScraper = mpScraper;
         }
 
         private IDbService _dbService;
+        private IMpScraper _mpScraper;
 
         /// <summary>
         /// Generates a RouteModel object for a given MP URL. Will only scrape from web if route is not already in db.
@@ -56,7 +57,7 @@ namespace ClimbingPlaylistApi.Models
 
         private RouteModel GetRouteFromScraper(string url)
         {
-            var route = MpScraper.GetRouteFromUrl(url);
+            var route = _mpScraper.GetRouteFromUrl(url);
             SaveRouteToDb(route);
             return route;
         }
