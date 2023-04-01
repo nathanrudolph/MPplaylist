@@ -10,7 +10,7 @@ namespace ClimbingPlaylistApi.Services
         void RemoveRoute(RouteModel route);
         PlaylistModel GetPlaylist(int playlistId);
         RouteModel GetRoute(uint routeId);
-        void UpdatePlaylist(int playlistId, PlaylistModel playlist);
+        void UpdatePlaylist(PlaylistModel playlist);
         void UpdateRoute(uint routeId, RouteModel route);
     }
 }

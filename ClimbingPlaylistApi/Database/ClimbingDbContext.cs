@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Identity.Client;
 
 namespace ClimbingPlaylistApi.Database
 {
@@ -13,18 +14,9 @@ namespace ClimbingPlaylistApi.Database
         public DbSet<RouteModel> Routes { get; set; }
         public DbSet<PlaylistModel> Playlists { get; set; }
 
-        public string DbPath { get; }
-
-        public ClimbingDbContext()
+        public ClimbingDbContext(DbContextOptions options) : base(options)
         {
-            var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
-            DbPath = System.IO.Path.Join(path,"ClimbingPlaylistApi.db");
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            options.UseSqlite($"Data Source={DbPath}");
+            
         }
     }
 }

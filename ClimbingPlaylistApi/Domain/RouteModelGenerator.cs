@@ -7,14 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClimbingPlaylistApi.Models
+namespace ClimbingPlaylistApi.Domain
 {
     /// <summary>
     /// Class to build a RouteModel
     /// </summary>
     public class RouteModelGenerator
     {
-        public RouteModelGenerator(IDbService dbService, IMpScraper mpScraper) 
+        public RouteModelGenerator(IDbService dbService, IMpScraper mpScraper)
         {
             _dbService = dbService;
             _mpScraper = mpScraper;
@@ -41,7 +41,7 @@ namespace ClimbingPlaylistApi.Models
             return route;
         }
 
-        private RouteModel GetRouteFromDb(uint id) 
+        private RouteModel GetRouteFromDb(uint id)
         {
             RouteModel route;
             try

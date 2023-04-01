@@ -17,10 +17,11 @@ namespace ClimbingPlaylistApiTest
         public void MpScraper_ShouldScrapeRoute(string expectedName, uint expectedId, string urlToScrape)
         {
             //Arrange
+            MpScraper scraper = new MpScraper();
             RouteModel result;
 
             //Act
-            result = MpScraper.GetRouteFromUrl(urlToScrape);
+            result = scraper.GetRouteFromUrl(urlToScrape);
 
             //Assert
             result.Name.Should().Be(expectedName);

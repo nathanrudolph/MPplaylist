@@ -7,6 +7,6 @@ namespace ClimbingPlaylistApi.Database
         void Add(PlaylistModel playlist);
         void Remove(PlaylistModel playlist);
         PlaylistModel Get(int id);
-        void Update(int id, PlaylistModel playlist);
+        void Update(PlaylistModel playlist);
     }
 }

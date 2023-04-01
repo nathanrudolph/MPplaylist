@@ -1,13 +1,15 @@
 ﻿using ClimbingPlaylistApi.Database;
 using ClimbingPlaylistApi.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace ClimbingPlaylistApi.Services
 {
     public class DbService : IDbService
     {
-        public DbService(IPlaylistRepository playlistRepo, IRouteRepository routeRepo)
+        public DbService(IPlaylistRepository playlistRepo, IRouteRepository routeRepo, DbContextOptions options)
         {
-            climbingDbContext = new ClimbingDbContext();
+            climbingDbContext = new ClimbingDbContext(options);
             _playlistRepo = playlistRepo;
             _routeRepo = routeRepo;
         }
@@ -21,9 +23,9 @@ namespace ClimbingPlaylistApi.Services
             _playlistRepo.Add(playlist);
         }
 
-        public void UpdatePlaylist(int playlistId, PlaylistModel playlist)
+        public void UpdatePlaylist(PlaylistModel playlist)
         {
-            _playlistRepo.Update(playlistId, playlist);
+            _playlistRepo.Update(playlist);
         }
 
         public void RemovePlaylist(PlaylistModel playlist)

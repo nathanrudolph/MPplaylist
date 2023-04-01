@@ -1,6 +1,6 @@
 ﻿namespace ClimbingPlaylistApi.Models
 {
-    public class RouteUrl
+    public class RouteUrl : IRouteUrl
     {
         public RouteUrl(string url)
         {
@@ -20,8 +20,8 @@
 
         public uint GetRouteId()
         {
-            if (Url == "") {  return 0; }
-            string id = Uri.Segments[2].Remove(Uri.Segments[2].Length-1);
+            if (Url == "") { return 0; }
+            string id = Uri.Segments[2].Remove(Uri.Segments[2].Length - 1);
             return uint.Parse(id);
         }
 

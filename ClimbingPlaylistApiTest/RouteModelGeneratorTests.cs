@@ -8,6 +8,7 @@ using ClimbingPlaylistApi.Services;
 using Moq;
 using Xunit;
 using FluentAssertions;
+using ClimbingPlaylistApi.Domain;
 
 namespace ClimbingPlaylistApiTest
 {

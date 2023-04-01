@@ -1,27 +1,45 @@
 ﻿using ClimbingPlaylistApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClimbingPlaylistApi.Database
 {
     public class PlaylistRepository : IPlaylistRepository
     {
+        private ClimbingDbContext _dbContext;
+
+        public PlaylistRepository(DbContextOptions options)
+        {
+            _dbContext = new ClimbingDbContext(options);
+        }
+
         public void Add(PlaylistModel playlist)
         {
-            throw new NotImplementedException();
+            _dbContext.Add(playlist);
+            _dbContext.SaveChanges();
         }
 
         public PlaylistModel Get(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return (PlaylistModel)_dbContext.Find(typeof(PlaylistModel), id);
+            }
+            catch
+            {
+                throw new ArgumentException($"Playlist with Id {id} not found.");
+            }
         }
 
         public void Remove(PlaylistModel playlist)
         {
-            throw new NotImplementedException();
+            _dbContext.Remove(playlist);
+            _dbContext.SaveChanges();
         }
 
-        public void Update(int id, PlaylistModel playlist)
+        public void Update(PlaylistModel playlist)
         {
-            throw new NotImplementedException();
+            _dbContext.Update(playlist);
+            _dbContext.SaveChanges();
         }
     }
 }

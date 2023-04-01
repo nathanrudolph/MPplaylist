@@ -17,6 +17,7 @@ namespace ClimbingPlaylistApi.Models
             this.Name = name;
             this.Id = id;
             this.Url = url;
+            Playlists = new List<PlaylistModel>();
         }
         public uint Id { get; set; }
         public string Name { get; set; }
@@ -39,5 +40,7 @@ namespace ClimbingPlaylistApi.Models
         /// </summary>
         public int? Height { get; set; }
         public int? Popularity { get; set; }
+
+        public List<PlaylistModel> Playlists { get; set; }
     }
 }

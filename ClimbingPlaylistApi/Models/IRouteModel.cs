@@ -21,6 +21,8 @@ namespace ClimbingPlaylistApi.Models
         int? Height { get; set; }
         int? Popularity { get; set; }
 
+        List<PlaylistModel> Playlists { get; set; }
+
         //TODO: add validator for Id/Name/Url
     }
 }
