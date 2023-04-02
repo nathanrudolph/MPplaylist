@@ -11,6 +11,8 @@ namespace ClimbingPlaylistApi.Services
         PlaylistModel GetPlaylist(int playlistId);
         RouteModel GetRoute(uint routeId);
         void UpdatePlaylist(PlaylistModel playlist);
-        void UpdateRoute(uint routeId, RouteModel route);
+        void UpdateRoute(RouteModel route);
+        List<PlaylistModel> GetAllPlaylists();
+        List<RouteModel> GetAllRoutes();
     }
 }

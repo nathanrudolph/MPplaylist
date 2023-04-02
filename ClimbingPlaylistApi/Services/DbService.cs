@@ -7,57 +7,79 @@ namespace ClimbingPlaylistApi.Services
 {
     public class DbService : IDbService
     {
-        public DbService(IPlaylistRepository playlistRepo, IRouteRepository routeRepo, DbContextOptions options)
+        public DbService(ClimbingDbContext dbContext)
         {
-            climbingDbContext = new ClimbingDbContext(options);
-            _playlistRepo = playlistRepo;
-            _routeRepo = routeRepo;
+            db = dbContext;
         }
 
-        private IPlaylistRepository _playlistRepo;
-        private IRouteRepository _routeRepo;
-        private ClimbingDbContext climbingDbContext;
+        private ClimbingDbContext db;
 
         public void AddPlaylist(PlaylistModel playlist)
         {
-            _playlistRepo.Add(playlist);
+            db.Add(playlist);
+            db.SaveChanges();
         }
 
         public void UpdatePlaylist(PlaylistModel playlist)
         {
-            _playlistRepo.Update(playlist);
+            db.Update(playlist);
+            db.SaveChanges();
         }
 
         public void RemovePlaylist(PlaylistModel playlist)
         {
-            _playlistRepo.Remove(playlist);
+            db.Remove(playlist);
+            db.SaveChanges();
         }
 
         public PlaylistModel GetPlaylist(int playlistId)
         {
-            return _playlistRepo.Get(playlistId);
+            var output = db.Find(typeof(PlaylistModel), playlistId);
+            if (output == null)
+            {
+                var message = $"Playlist with Id {playlistId} not found.";
+                throw new ArgumentException(message);
+            }
+            return (PlaylistModel)output;
         }
 
         public void AddRoute(RouteModel route)
         {
-            _routeRepo.Add(route);
+            db.Add(route);
+            db.SaveChanges();
         }
 
-        public void UpdateRoute(uint routeId, RouteModel route)
+        public void UpdateRoute(RouteModel route)
         {
-            _routeRepo.Update(routeId, route);
+            db.Update(route);
+            db.SaveChanges();
         }
 
         public void RemoveRoute(RouteModel route)
         {
-            _routeRepo.Remove(route);
+            db.Remove(route);
+            db.SaveChanges();
         }
 
         public RouteModel GetRoute(uint routeId)
         {
-            return _routeRepo.Get(routeId);
+            var output = db.Find(typeof(RouteModel), routeId);
+            if (output == null)
+            {
+                var message = $"Route with Id {routeId} not found.";
+                throw new ArgumentException(message);
+            }
+            return (RouteModel)output;
         }
 
+        public List<PlaylistModel> GetAllPlaylists()
+        {
+            return db.Playlists.ToList();
+        }
 
+        public List<RouteModel> GetAllRoutes()
+        {
+            return db.Routes.ToList();
+        }
     }
 }

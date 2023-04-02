@@ -9,9 +9,10 @@ namespace ClimbingPlaylistApi.Models
     /// <summary>
     /// Model for an individual climbing route
     /// </summary>
-    public class RouteModel : IRouteModel
+    public class RouteModel
     {
-        //TODO: switch to record
+        //TODO: switch to record?
+
         public RouteModel(string name, uint id, string url)
         {
             this.Name = name;

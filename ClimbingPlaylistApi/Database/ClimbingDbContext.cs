@@ -9,14 +9,13 @@ using Microsoft.Identity.Client;
 
 namespace ClimbingPlaylistApi.Database
 {
-    internal class ClimbingDbContext : DbContext
+    public class ClimbingDbContext : DbContext, IClimbingDbContext
     {
         public DbSet<RouteModel> Routes { get; set; }
         public DbSet<PlaylistModel> Playlists { get; set; }
 
         public ClimbingDbContext(DbContextOptions options) : base(options)
         {
-            
         }
     }
 }

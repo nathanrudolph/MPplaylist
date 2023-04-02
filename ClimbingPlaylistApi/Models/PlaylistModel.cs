@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace ClimbingPlaylistApi.Models
 {
     /// <summary>
-    /// Model for a group of climbing routes
+    /// Model for a list of climbing routes
     /// </summary>
-    public class PlaylistModel : IPlaylistModel
+    public class PlaylistModel
     {
         public PlaylistModel(string name = "New List")
         {
