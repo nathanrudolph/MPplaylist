@@ -23,26 +23,47 @@ namespace ClimbingPlaylistApi.Models
         }
         [Key]
         public int Id { get; set; }
+
+        /// <summary>
+        /// ID Key in MP Url
+        /// </summary>
+        [MaxLength(64)]
         public string MpId { get; set; }
+
+        [MaxLength(256)]
         public string Name { get; set; }
+
+        [MaxLength(1024)]
         public string Url { get; set; }
+
         /// <summary>
         /// Climbing types of the route (Sport, Trad, etc) joined in a single string
         /// </summary>
+        [MaxLength(64)]
         public string? Type { get; set; }
+        
+        [MaxLength(4096)]
         public string? Description { get; set; }
+
         /// <summary>
         /// Climbing grade in YDS
         /// </summary>
+        [MaxLength(16)]
         public string? Grade { get; set; }
+
         /// <summary>
         /// Average user rating of the climb on a scale from 0-4
         /// </summary>
+        [MaxLength(8)]
         public double? Rating { get; set; }
+
         /// <summary>
         /// Route length in feet
         /// </summary>
+        [MaxLength(8)]
         public int? Height { get; set; }
+
+        [MaxLength(8)]
         public int? Popularity { get; set; }
 
         // // Hold list of playlists that contain this route to create a many-to-many link

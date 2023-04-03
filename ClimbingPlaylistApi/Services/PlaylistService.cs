@@ -10,6 +10,7 @@ namespace ClimbingPlaylistApi.Services
 {
     public class PlaylistService : IPlaylistService
     {
+        // TODO: update to stateless?
         public PlaylistService(IDbService dbService, IRouteModelHandler routeHandler)
         {
             _dbService = dbService;
@@ -25,7 +26,7 @@ namespace ClimbingPlaylistApi.Services
         private IRouteModelHandler _routeHandler { get; set; }
         private IDbService _dbService { get; set; }
 
-        public List<PlaylistModel> Playlists { get; set; }
+        public List<PlaylistModel> Playlists { get; set; } = new List<PlaylistModel>();
 
         public void AddPlaylist(PlaylistModel playlist)
         {

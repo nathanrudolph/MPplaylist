@@ -34,7 +34,7 @@ namespace ClimbingPlaylistApi.Services
 
         public PlaylistModel GetPlaylist(int playlistId)
         {
-            var output = db.Find(typeof(PlaylistModel), playlistId);
+            var output = db.Playlists.Where(p => p.Id == playlistId).Include(p => p.Routes).First();
             if (output == null)
             {
                 var message = $"Playlist with Id {playlistId} not found.";
@@ -63,7 +63,7 @@ namespace ClimbingPlaylistApi.Services
 
         public RouteModel GetRoute(string MpId)
         {
-            var output = db.Find(typeof(RouteModel), MpId);
+            var output = db.Routes.Where(r => r.MpId == MpId).FirstOrDefault();
             if (output == null)
             {
                 var message = $"Route with MpId {MpId} not found.";
@@ -80,6 +80,17 @@ namespace ClimbingPlaylistApi.Services
         public List<RouteModel> GetAllRoutes()
         {
             return db.Routes.ToList();
+        }
+
+        public List<RouteModel> GetRoutesInPlaylist(int PlaylistId)
+        {
+            var playlist = db.Playlists.Where(p => p.Id == PlaylistId).FirstOrDefault();
+            if (playlist == null)
+            {
+                var message = $"Playlist with ID {PlaylistId} was not found.";
+                throw new ArgumentException(message);
+            }
+            return playlist.Routes.ToList();
         }
     }
 }

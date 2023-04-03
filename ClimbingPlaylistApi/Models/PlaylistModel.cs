@@ -16,11 +16,18 @@ namespace ClimbingPlaylistApi.Models
         {
             Name = name;
             Routes = new List<RouteModel>();
+            CreationDate = DateTime.Now;
         }
 
         [Key]
         public int Id { get; init; }
+        
+        [MaxLength(256)]
         public string Name { get; set; }
+
+        [Required]
+        public DateTime CreationDate { get; set; }
+        
         public List<RouteModel> Routes { get; set; }
     }
 }

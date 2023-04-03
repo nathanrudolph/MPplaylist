@@ -14,5 +14,6 @@ namespace ClimbingPlaylistApi.Services
         List<PlaylistModel> GetAllPlaylists();
         List<RouteModel> GetAllRoutes();
         RouteModel GetRoute(string MpId);
+        List<RouteModel> GetRoutesInPlaylist(int PlaylistId);
     }
 }
