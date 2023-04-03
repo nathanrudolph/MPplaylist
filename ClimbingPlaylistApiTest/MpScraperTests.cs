@@ -25,7 +25,7 @@ namespace ClimbingPlaylistApiTest
 
             //Assert
             result.Name.Should().Be(expectedName);
-            result.Id.Should().Be(expectedId);
+            result.MpId.Should().Be(expectedId);
         }
 
         public static IEnumerable<object[]> TestData()

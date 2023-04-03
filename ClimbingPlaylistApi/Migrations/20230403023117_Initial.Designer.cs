@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClimbingPlaylistApi.Migrations
 {
     [DbContext(typeof(ClimbingDbContext))]
-    [Migration("20230401051333_InitialDbCreation")]
-    partial class InitialDbCreation
+    [Migration("20230403023117_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,11 +44,11 @@ namespace ClimbingPlaylistApi.Migrations
 
             modelBuilder.Entity("ClimbingPlaylistApi.Models.RouteModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -58,6 +58,9 @@ namespace ClimbingPlaylistApi.Migrations
 
                     b.Property<int?>("Height")
                         .HasColumnType("int");
+
+                    b.Property<long>("MpId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -79,6 +82,36 @@ namespace ClimbingPlaylistApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Routes");
+                });
+
+            modelBuilder.Entity("PlaylistModelRouteModel", b =>
+                {
+                    b.Property<int>("PlaylistsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoutesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlaylistsId", "RoutesId");
+
+                    b.HasIndex("RoutesId");
+
+                    b.ToTable("PlaylistModelRouteModel");
+                });
+
+            modelBuilder.Entity("PlaylistModelRouteModel", b =>
+                {
+                    b.HasOne("ClimbingPlaylistApi.Models.PlaylistModel", null)
+                        .WithMany()
+                        .HasForeignKey("PlaylistsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClimbingPlaylistApi.Models.RouteModel", null)
+                        .WithMany()
+                        .HasForeignKey("RoutesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

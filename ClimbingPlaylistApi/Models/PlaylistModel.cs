@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,14 +14,11 @@ namespace ClimbingPlaylistApi.Models
     {
         public PlaylistModel(string name = "New List")
         {
-            Id = 0; //TODO: generate/validate primary key, or handle in PlaylistService
             Name = name;
             Routes = new List<RouteModel>();
         }
 
-        /// <summary>
-        /// Primary key of the playlist
-        /// </summary>
+        [Key]
         public int Id { get; init; }
         public string Name { get; set; }
         public List<RouteModel> Routes { get; set; }

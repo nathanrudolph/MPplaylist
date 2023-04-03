@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,14 +14,16 @@ namespace ClimbingPlaylistApi.Models
     {
         //TODO: switch to record?
 
-        public RouteModel(string name, uint id, string url)
+        public RouteModel(string name, uint MpId, string url)
         {
             this.Name = name;
-            this.Id = id;
+            this.MpId = MpId;
             this.Url = url;
             Playlists = new List<PlaylistModel>();
         }
-        public uint Id { get; set; }
+        [Key]
+        public int Id { get; set; }
+        public uint MpId { get; set; }
         public string Name { get; set; }
         public string Url { get; set; }
         /// <summary>

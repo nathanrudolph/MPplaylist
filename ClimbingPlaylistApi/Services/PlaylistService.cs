@@ -1,4 +1,5 @@
-﻿using ClimbingPlaylistApi.Models;
+﻿using ClimbingPlaylistApi.Domain;
+using ClimbingPlaylistApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +10,25 @@ namespace ClimbingPlaylistApi.Services
 {
     public class PlaylistService : IPlaylistService
     {
-        public PlaylistService(IDbService dbService)
+        public PlaylistService(IDbService dbService, IRouteModelHandler routeHandler)
         {
             _dbService = dbService;
+            _routeHandler = routeHandler;
+            OnInitialize();
         }
 
-        //TODO: update db and save state after each CRUD operation?
+        private void OnInitialize()
+        {
+            Playlists = _dbService.GetAllPlaylists();
+            Routes = _dbService.GetAllRoutes();
+        }
 
-        IDbService _dbService;
+        private IRouteModelHandler _routeHandler { get; set; }
+        private IDbService _dbService { get; set; }
 
-        public List<PlaylistModel> Playlists { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<PlaylistModel> Playlists { get; set; }
+
+        public List<RouteModel> Routes { get; set; }
 
         public void AddPlaylist(PlaylistModel playlist)
         {
@@ -28,6 +38,18 @@ namespace ClimbingPlaylistApi.Services
                 throw new ArgumentException(message);
             }
             Playlists.Add(playlist);
+            _dbService.AddPlaylist(playlist);
+        }
+
+        public void CreateNewEmptyPlaylist(string playlistName)
+        {
+            if (Playlists.Any(p => p.Name == playlistName))
+            {
+                var message = $"Playlist with name \"{playlistName}\" already exists.";
+                throw new ArgumentException(message);
+            }
+            Playlists.Add(new PlaylistModel(playlistName));
+            _dbService.AddPlaylist(new PlaylistModel(playlistName));
         }
 
         public void RemovePlaylist(PlaylistModel playlist)
@@ -38,6 +60,7 @@ namespace ClimbingPlaylistApi.Services
                 throw new ArgumentException(message);
             }
             Playlists.Remove(playlist);
+            _dbService.RemovePlaylist(playlist);
         }
 
         public List<string> GetPlaylistNames()
@@ -61,22 +84,38 @@ namespace ClimbingPlaylistApi.Services
 
         public void AddRouteToPlaylist(PlaylistModel playlist, RouteModel route)
         {
-            if (playlist.Routes.Any(r => r.Id == route.Id))
+            if (playlist.Routes.Any(r => r.MpId == route.MpId))
             {
                 var message = $"Route \"{route.Name}\" is already in this playlist.";
                 throw new ArgumentException(message);
             }
             playlist.Routes.Add(route);
+            route.Playlists.Add(playlist);
+            _dbService.UpdatePlaylist(playlist);
+            _dbService.UpdateRoute(route);
+        }
+
+        public void AddRouteToPlaylist(PlaylistModel playlist, string routeUrl)
+        {
+            var route = _routeHandler.GetRoute(routeUrl);
+            playlist.Routes.Add(route);
+            route.Playlists.Add(playlist);
+            _dbService.UpdatePlaylist(playlist);
+            _dbService.UpdateRoute(route);
+
         }
 
         public void RemoveRouteFromPlaylist(PlaylistModel playlist, RouteModel route)
         {
-            if (!playlist.Routes.Any(r => r.Id == route.Id))
+            if (!playlist.Routes.Any(r => r.MpId == route.MpId))
             {
-                var message = $"Route \"{route.Id}\" was not found in playlist {playlist.Id}.";
+                var message = $"Route \"{route.MpId}\" was not found in playlist {playlist.Id}.";
                 throw new ArgumentException(message);
             }
             playlist.Routes.Remove(route);
+            route.Playlists.Remove(playlist);
+            _dbService.UpdatePlaylist(playlist);
+            _dbService.UpdateRoute(route);
         }
 
         public List<RouteModel> GetAllRoutesInPlaylist(PlaylistModel playlist)
@@ -88,7 +127,7 @@ namespace ClimbingPlaylistApi.Services
         {
             try
             {
-                return playlist.Routes.FirstOrDefault(r => r.Id == id);
+                return playlist.Routes.FirstOrDefault(r => r.MpId == id);
             }
             catch (NullReferenceException)
             {
@@ -101,6 +140,7 @@ namespace ClimbingPlaylistApi.Services
         {
             //TODO: check if new playlist name already exists
             playlist.Name = newName;
+            _dbService.UpdatePlaylist(playlist);
         }
     }
 }

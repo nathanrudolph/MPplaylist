@@ -14,13 +14,13 @@ namespace ClimbingPlaylistApiTest
 {
     public class RouteModelGeneratorTests
     {
-        private readonly RouteModelGenerator _sut;
+        private readonly RouteModelHandler _sut;
         private readonly Mock<IDbService> _dbServiceMock = new Mock<IDbService>();
         private readonly Mock<IMpScraper> _mpScraperMock = new Mock<IMpScraper>();
 
         public RouteModelGeneratorTests() 
         {
-            _sut = new RouteModelGenerator(_dbServiceMock.Object,_mpScraperMock.Object);
+            _sut = new RouteModelHandler(_dbServiceMock.Object,_mpScraperMock.Object);
         }
 
         [Fact]
@@ -32,7 +32,7 @@ namespace ClimbingPlaylistApiTest
                 .Returns(expectedRoute);
 
             //Act
-            var result = _sut.Generate("https://www.mountainproject.com/route/105809181/armatron");
+            var result = _sut.GetRoute("https://www.mountainproject.com/route/105809181/armatron");
 
             //Assert
             result.Should().Be(expectedRoute);
@@ -52,7 +52,7 @@ namespace ClimbingPlaylistApiTest
                 .Returns(expectedRoute);
 
             //Act
-            var result = _sut.Generate("https://www.mountainproject.com/route/105809181/armatron");
+            var result = _sut.GetRoute("https://www.mountainproject.com/route/105809181/armatron");
 
             //Assert
             result.Should().Be(expectedRoute);

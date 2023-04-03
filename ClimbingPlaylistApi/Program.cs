@@ -1,4 +1,5 @@
 using ClimbingPlaylistApi.Database;
+using ClimbingPlaylistApi.Domain;
 using ClimbingPlaylistApi.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,18 +7,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-//builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IMpScraper,MpScraper>();
 builder.Services.AddDbContext<ClimbingDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
 
-//TODO: add domain DI container
+builder.Services.AddScoped<IDbService,DbService>();
+builder.Services.AddScoped<IPlaylistService,PlaylistService>();
+builder.Services.AddTransient<IMpScraper,MpScraper>();
+builder.Services.AddTransient<IRouteModelHandler,RouteModelHandler>();
+
+//builder.Services.AddControllers();
 
 var app = builder.Build();
 

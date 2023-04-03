@@ -41,11 +41,11 @@ namespace ClimbingPlaylistApi.Migrations
 
             modelBuilder.Entity("ClimbingPlaylistApi.Models.RouteModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -55,6 +55,9 @@ namespace ClimbingPlaylistApi.Migrations
 
                     b.Property<int?>("Height")
                         .HasColumnType("int");
+
+                    b.Property<long>("MpId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -83,8 +86,8 @@ namespace ClimbingPlaylistApi.Migrations
                     b.Property<int>("PlaylistsId")
                         .HasColumnType("int");
 
-                    b.Property<long>("RoutesId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("RoutesId")
+                        .HasColumnType("int");
 
                     b.HasKey("PlaylistsId", "RoutesId");
 
