@@ -61,12 +61,12 @@ namespace ClimbingPlaylistApi.Services
             db.SaveChanges();
         }
 
-        public RouteModel GetRoute(uint routeId)
+        public RouteModel GetRoute(string MpId)
         {
-            var output = db.Find(typeof(RouteModel), routeId);
+            var output = db.Find(typeof(RouteModel), MpId);
             if (output == null)
             {
-                var message = $"Route with Id {routeId} not found.";
+                var message = $"Route with MpId {MpId} not found.";
                 throw new ArgumentException(message);
             }
             return (RouteModel)output;

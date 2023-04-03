@@ -14,7 +14,7 @@ namespace ClimbingPlaylistApiTest
     {
         [Theory]
         [MemberData(nameof(TestData))]
-        public void MpScraper_ShouldScrapeRoute(string expectedName, uint expectedId, string urlToScrape)
+        public void MpScraper_ShouldScrapeRoute(string expectedName, string expectedId, string urlToScrape)
         {
             //Arrange
             MpScraper scraper = new MpScraper();
@@ -30,8 +30,8 @@ namespace ClimbingPlaylistApiTest
 
         public static IEnumerable<object[]> TestData()
         {
-            yield return new object[] { "The Nightcrawler", (uint)105920684 , "https://www.mountainproject.com/route/105920684/the-nightcrawler" };
-            yield return new object[] { "Armatron", (uint)105809181 , "https://www.mountainproject.com/route/105809181/armatron" };
+            yield return new object[] { "The Nightcrawler", "105920684" , "https://www.mountainproject.com/route/105920684/the-nightcrawler" };
+            yield return new object[] { "Armatron", "105809181" , "https://www.mountainproject.com/route/105809181/armatron" };
         }
     }
 }

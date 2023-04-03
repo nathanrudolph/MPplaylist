@@ -14,16 +14,16 @@ namespace ClimbingPlaylistApi.Models
     {
         //TODO: switch to record?
 
-        public RouteModel(string name, uint MpId, string url)
+        public RouteModel(string name, string MpId, string url)
         {
             this.Name = name;
             this.MpId = MpId;
             this.Url = url;
-            Playlists = new List<PlaylistModel>();
+            //Playlists = new List<PlaylistModel>();
         }
         [Key]
         public int Id { get; set; }
-        public uint MpId { get; set; }
+        public string MpId { get; set; }
         public string Name { get; set; }
         public string Url { get; set; }
         /// <summary>
@@ -45,6 +45,7 @@ namespace ClimbingPlaylistApi.Models
         public int? Height { get; set; }
         public int? Popularity { get; set; }
 
-        public List<PlaylistModel> Playlists { get; set; }
+        // // Hold list of playlists that contain this route to create a many-to-many link
+        //public List<PlaylistModel> Playlists { get; set; }
     }
 }

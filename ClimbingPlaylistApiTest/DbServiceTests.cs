@@ -17,7 +17,6 @@ namespace ClimbingPlaylistApiTest
         private readonly DbService _sut;
         private readonly ClimbingDbContext _context;
         private readonly DbContextOptionsBuilder _optionsBuilder;
-        private readonly DbContextOptions _options;
 
         private readonly string _connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ClimbingPlaylistApi;Integrated Security=True;";
 
@@ -32,7 +31,7 @@ namespace ClimbingPlaylistApiTest
         [Fact]
         public void DbService_ShouldAddRoute()
         {
-            RouteModel expectedRoute = new RouteModel("Armatron", (uint)105809181, "https://www.mountainproject.com/route/105809181/armatron");
+            RouteModel expectedRoute = new RouteModel("Armatron", "105809181", "https://www.mountainproject.com/route/105809181/armatron");
 
             _sut.AddRoute(expectedRoute);
 

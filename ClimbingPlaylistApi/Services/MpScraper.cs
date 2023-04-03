@@ -34,7 +34,7 @@ namespace ClimbingPlaylistApi.Services
 
         private RouteModel BuildRouteModelFromScrapedRoute(MountainProjectAPI.Route route)
         {
-            return new RouteModel(route.Name, uint.Parse(route.ID), route.URL)
+            return new RouteModel(route.Name, route.ID, route.URL)
             {
                 Height = (int?)route.Height.GetValue(Dimension.Units.Feet),
                 Grade = route.GetRouteGrade().ToString(),

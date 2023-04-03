@@ -2,7 +2,7 @@
 {
     public interface IRouteUrl
     {
-        uint GetRouteId();
+        string GetRouteId();
         string ToString();
     }
 }

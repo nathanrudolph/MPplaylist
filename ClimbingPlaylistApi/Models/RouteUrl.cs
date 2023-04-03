@@ -18,16 +18,16 @@
             return Url;
         }
 
-        public uint GetRouteId()
+        public string GetRouteId()
         {
-            if (Url == "") { return 0; }
-            string id = Uri.Segments[2].Remove(Uri.Segments[2].Length - 1);
-            return uint.Parse(id);
+            if (Url == "") { return ""; }
+            string MpId = Uri.Segments[2].Remove(Uri.Segments[2].Length - 1);
+            return MpId;
         }
 
         private void ValidateUrl(string url)
         {
-            //TODO: Url validation
+            //TODO: more Url validation
             if (Uri.Segments.Length != 4 | !Uri.Segments[1].Contains("route"))
             {
                 Url = "";

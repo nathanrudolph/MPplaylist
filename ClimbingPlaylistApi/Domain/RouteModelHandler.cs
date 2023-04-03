@@ -24,16 +24,16 @@ namespace ClimbingPlaylistApi.Domain
         private IMpScraper _mpScraper;
 
         /// <summary>
-        /// Returns a RouteModel object for a given MP URL. Will scrape from web and add to db if route is not in db.
+        /// Returns a RouteModel object for a given MP URL. Will scrape from web and add to db if route is not already in db.
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
         public RouteModel GetRoute(string url)
         {
             RouteUrl routeUrl = new RouteUrl(url);
-            uint id = routeUrl.GetRouteId();
-            var route = GetRouteFromDb(id);
-            if (route.MpId == 0)
+            string MpId = routeUrl.GetRouteId();
+            var route = GetRouteFromDb(MpId);
+            if (route.MpId == "")
             {
                 route = GetRouteFromScraper(url);
                 SaveRouteToDb(route);
@@ -41,16 +41,16 @@ namespace ClimbingPlaylistApi.Domain
             return route;
         }
 
-        private RouteModel GetRouteFromDb(uint id)
+        private RouteModel GetRouteFromDb(string MpId)
         {
             RouteModel route;
             try
             {
-                route = _dbService.GetRoute(id);
+                route = _dbService.GetRoute(MpId);
             }
             catch
             {
-                route = new RouteModel("", 0, "");
+                route = new RouteModel("", "", "");
             }
             return route;
         }

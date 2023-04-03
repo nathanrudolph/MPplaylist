@@ -20,15 +20,12 @@ namespace ClimbingPlaylistApi.Services
         private void OnInitialize()
         {
             Playlists = _dbService.GetAllPlaylists();
-            Routes = _dbService.GetAllRoutes();
         }
 
         private IRouteModelHandler _routeHandler { get; set; }
         private IDbService _dbService { get; set; }
 
         public List<PlaylistModel> Playlists { get; set; }
-
-        public List<RouteModel> Routes { get; set; }
 
         public void AddPlaylist(PlaylistModel playlist)
         {
@@ -90,18 +87,18 @@ namespace ClimbingPlaylistApi.Services
                 throw new ArgumentException(message);
             }
             playlist.Routes.Add(route);
-            route.Playlists.Add(playlist);
+            //route.Playlists.Add(playlist);
             _dbService.UpdatePlaylist(playlist);
-            _dbService.UpdateRoute(route);
+            //_dbService.UpdateRoute(route);
         }
 
         public void AddRouteToPlaylist(PlaylistModel playlist, string routeUrl)
         {
             var route = _routeHandler.GetRoute(routeUrl);
             playlist.Routes.Add(route);
-            route.Playlists.Add(playlist);
+            //route.Playlists.Add(playlist);
             _dbService.UpdatePlaylist(playlist);
-            _dbService.UpdateRoute(route);
+            //_dbService.UpdateRoute(route);
 
         }
 
@@ -113,9 +110,9 @@ namespace ClimbingPlaylistApi.Services
                 throw new ArgumentException(message);
             }
             playlist.Routes.Remove(route);
-            route.Playlists.Remove(playlist);
+            //route.Playlists.Remove(playlist);
             _dbService.UpdatePlaylist(playlist);
-            _dbService.UpdateRoute(route);
+            //_dbService.UpdateRoute(route);
         }
 
         public List<RouteModel> GetAllRoutesInPlaylist(PlaylistModel playlist)
@@ -123,15 +120,15 @@ namespace ClimbingPlaylistApi.Services
             return playlist.Routes;
         }
 
-        public RouteModel GetRouteInPlaylist(PlaylistModel playlist, int id)
+        public RouteModel GetRouteInPlaylist(PlaylistModel playlist, string RouteMpId)
         {
             try
             {
-                return playlist.Routes.FirstOrDefault(r => r.MpId == id);
+                return playlist.Routes.FirstOrDefault(r => r.MpId == RouteMpId);
             }
             catch (NullReferenceException)
             {
-                var message = $"Route {id} was not found in the playlist.";
+                var message = $"Route {RouteMpId} was not found in the playlist.";
                 throw new KeyNotFoundException(message);
             }
         }
