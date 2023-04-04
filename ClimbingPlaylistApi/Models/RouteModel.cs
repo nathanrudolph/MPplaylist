@@ -33,6 +33,9 @@ namespace ClimbingPlaylistApi.Models
         [MaxLength(256)]
         public string Name { get; set; }
 
+        /// <summary>
+        /// MP Url of the route
+        /// </summary>
         [MaxLength(1024)]
         public string Url { get; set; }
 

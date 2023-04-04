@@ -12,7 +12,7 @@ namespace ClimbingPlaylistApi.Services
             db = dbContext;
         }
 
-        private ClimbingDbContext db;
+        private readonly ClimbingDbContext db;
 
         public void AddPlaylist(PlaylistModel playlist)
         {
@@ -32,15 +32,9 @@ namespace ClimbingPlaylistApi.Services
             db.SaveChanges();
         }
 
-        public PlaylistModel GetPlaylist(int playlistId)
+        public PlaylistModel? GetPlaylist(int playlistId)
         {
-            var output = db.Playlists.Where(p => p.Id == playlistId).Include(p => p.Routes).First();
-            if (output == null)
-            {
-                var message = $"Playlist with Id {playlistId} not found.";
-                throw new ArgumentException(message);
-            }
-            return (PlaylistModel)output;
+            return db.Playlists.Where(p => p.Id == playlistId).Include(p => p.Routes).First();
         }
 
         public void AddRoute(RouteModel route)
@@ -61,20 +55,19 @@ namespace ClimbingPlaylistApi.Services
             db.SaveChanges();
         }
 
-        public RouteModel GetRoute(string MpId)
+        public RouteModel? GetRoute(string MpId)
         {
-            var output = db.Routes.Where(r => r.MpId == MpId).FirstOrDefault();
-            if (output == null)
-            {
-                var message = $"Route with MpId {MpId} not found.";
-                throw new ArgumentException(message);
-            }
-            return (RouteModel)output;
+            return db.Routes.Where(r => r.MpId == MpId).FirstOrDefault();
+        }
+
+        public RouteModel? GetRoute(int Id)
+        {
+            return db.Routes.Where(r => r.Id == Id).FirstOrDefault();
         }
 
         public List<PlaylistModel> GetAllPlaylists()
         {
-            return db.Playlists.ToList();
+            return db.Playlists.Include(p => p.Routes).ToList();
         }
 
         public List<RouteModel> GetAllRoutes()
@@ -91,6 +84,11 @@ namespace ClimbingPlaylistApi.Services
                 throw new ArgumentException(message);
             }
             return playlist.Routes.ToList();
+        }
+
+        public List<string> GetPlaylistNames()
+        {
+            return db.Playlists.Select(p => p.Name).ToList();
         }
     }
 }

@@ -8,12 +8,14 @@ namespace ClimbingPlaylistApi.Services
         void AddRoute(RouteModel route);
         void RemovePlaylist(PlaylistModel playlist);
         void RemoveRoute(RouteModel route);
-        PlaylistModel GetPlaylist(int playlistId);
+        PlaylistModel? GetPlaylist(int playlistId);
         void UpdatePlaylist(PlaylistModel playlist);
         void UpdateRoute(RouteModel route);
         List<PlaylistModel> GetAllPlaylists();
         List<RouteModel> GetAllRoutes();
-        RouteModel GetRoute(string MpId);
+        RouteModel? GetRoute(string MpId);
+        RouteModel? GetRoute(int id);
         List<RouteModel> GetRoutesInPlaylist(int PlaylistId);
+        List<string> GetPlaylistNames();
     }
 }

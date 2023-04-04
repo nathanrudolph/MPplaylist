@@ -1,5 +1,6 @@
 ﻿using ClimbingPlaylistApi.Domain;
 using ClimbingPlaylistApi.Models;
+using ClimbingPlaylistApi.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,74 +11,39 @@ namespace ClimbingPlaylistApi.Services
 {
     public class PlaylistService : IPlaylistService
     {
-        // TODO: update to stateless?
         public PlaylistService(IDbService dbService, IRouteModelHandler routeHandler)
         {
             _dbService = dbService;
             _routeHandler = routeHandler;
-            OnInitialize();
-        }
-
-        private void OnInitialize()
-        {
-            Playlists = _dbService.GetAllPlaylists();
         }
 
         private IRouteModelHandler _routeHandler { get; set; }
         private IDbService _dbService { get; set; }
 
-        public List<PlaylistModel> Playlists { get; set; } = new List<PlaylistModel>();
-
         public void AddPlaylist(PlaylistModel playlist)
         {
-            if (Playlists.Any(p => p.Name == playlist.Name))
-            {
-                var message = $"Playlist with name \"{playlist.Name}\" already exists.";
-                throw new ArgumentException(message);
-            }
-            Playlists.Add(playlist);
             _dbService.AddPlaylist(playlist);
         }
 
         public void CreateNewEmptyPlaylist(string playlistName)
         {
-            if (Playlists.Any(p => p.Name == playlistName))
-            {
-                var message = $"Playlist with name \"{playlistName}\" already exists.";
-                throw new ArgumentException(message);
-            }
-            Playlists.Add(new PlaylistModel(playlistName));
             _dbService.AddPlaylist(new PlaylistModel(playlistName));
+            //TODO: add dbService notification of new Id to pass back to user
         }
 
-        public void RemovePlaylist(PlaylistModel playlist)
+        public void DeletePlaylist(PlaylistModel playlist)
         {
-            if (!Playlists.Any(p => p.Name == playlist.Name))
-            {
-                var message = $"Playlist \"{playlist.Name}\" was not found.";
-                throw new ArgumentException(message);
-            }
-            Playlists.Remove(playlist);
             _dbService.RemovePlaylist(playlist);
         }
 
         public List<string> GetPlaylistNames()
         {
-            return Playlists.Select(p => p.Name).ToList();
+            return _dbService.GetPlaylistNames();
         }
 
-        public PlaylistModel GetPlaylist(int id)
+        public PlaylistModel? GetPlaylistById(int id)
         {
-            //TODO: set "default" playlist if playlist isn't found?
-            try
-            {
-                return Playlists.First(p => p.Id == id);
-            }
-            catch
-            {
-                var message = $"Playlist {id} does not exist.";
-                throw new ArgumentException(message);
-            }
+            return _dbService.GetPlaylist(id);
         }
 
         public void AddRouteToPlaylist(PlaylistModel playlist, RouteModel route)
@@ -88,57 +54,93 @@ namespace ClimbingPlaylistApi.Services
                 throw new ArgumentException(message);
             }
             playlist.Routes.Add(route);
-            //route.Playlists.Add(playlist);
             _dbService.UpdatePlaylist(playlist);
-            //_dbService.UpdateRoute(route);
         }
 
         public void AddRouteToPlaylist(PlaylistModel playlist, string routeUrl)
         {
             var route = _routeHandler.GetRoute(routeUrl);
             playlist.Routes.Add(route);
-            //route.Playlists.Add(playlist);
             _dbService.UpdatePlaylist(playlist);
-            //_dbService.UpdateRoute(route);
-
         }
 
-        public void RemoveRouteFromPlaylist(PlaylistModel playlist, RouteModel route)
+        public void DeleteRouteFromPlaylist(PlaylistModel playlist, RouteModel route)
         {
             if (!playlist.Routes.Any(r => r.MpId == route.MpId))
             {
-                var message = $"Route \"{route.MpId}\" was not found in playlist {playlist.Id}.";
+                var message = $"Route \"{route.Name}\" was not found in playlist {playlist.Id}.";
                 throw new ArgumentException(message);
             }
             playlist.Routes.Remove(route);
-            //route.Playlists.Remove(playlist);
-            _dbService.UpdatePlaylist(playlist);
-            //_dbService.UpdateRoute(route);
-        }
-
-        public List<RouteModel> GetAllRoutesInPlaylist(PlaylistModel playlist)
-        {
-            return playlist.Routes;
-        }
-
-        public RouteModel GetRouteInPlaylist(PlaylistModel playlist, string RouteMpId)
-        {
-            try
-            {
-                return playlist.Routes.FirstOrDefault(r => r.MpId == RouteMpId);
-            }
-            catch (NullReferenceException)
-            {
-                var message = $"Route {RouteMpId} was not found in the playlist.";
-                throw new KeyNotFoundException(message);
-            }
-        }
-
-        public void RenamePlaylist(PlaylistModel playlist, string newName)
-        {
-            //TODO: check if new playlist name already exists
-            playlist.Name = newName;
             _dbService.UpdatePlaylist(playlist);
         }
+
+        //public List<RouteModel> GetAllRoutesInPlaylist(PlaylistModel playlist)
+        //{
+        //    return playlist.Routes;
+        //}
+
+        //public RouteModel GetRouteInPlaylist(PlaylistModel playlist, string RouteMpId)
+        //{
+        //    try
+        //    {
+        //        return playlist.Routes.FirstOrDefault(r => r.MpId == RouteMpId);
+        //    }
+        //    catch (NullReferenceException)
+        //    {
+        //        var message = $"Route {RouteMpId} was not found in the playlist.";
+        //        throw new KeyNotFoundException(message);
+        //    }
+        //}
+
+        public void UpdatePlaylist(PlaylistModel playlist)
+        {
+            _dbService.UpdatePlaylist(playlist);
+        }
+
+        public List<PlaylistModel> Get()
+        {
+            return _dbService.GetAllPlaylists();
+        }
+
+        public void AddRouteToPlaylist(int playlistId, string routeUrl)
+        {
+            RouteModel route = _routeHandler.GetRoute(routeUrl);
+            PlaylistModel? playlist = _dbService.GetPlaylist(playlistId);
+            if (playlist == null) { throw new KeyNotFoundException($"Playlist with ID {playlistId} was not found."); }
+            AddRouteToPlaylist(playlist, route);
+        }
+
+        public void DeleteRouteFromPlaylist(int playlistId, int routeId)
+        {
+            //RouteModel route = _dbService.GetRoute(routeId);
+            PlaylistModel? playlist = _dbService.GetPlaylist(playlistId);
+            if (playlist == null)
+            {
+                throw new KeyNotFoundException($"Playlist with ID {playlistId} was not found.");
+            }
+            RouteModel? route = playlist.Routes.Where(r => r.Id == routeId).FirstOrDefault();
+            if (route == null)
+            {
+                throw new KeyNotFoundException($"Route with ID {routeId} was not found in playlist {playlistId}.");
+            }
+            DeleteRouteFromPlaylist(playlist, route);
+        }
+
+        //private void ValidatePlaylist(PlaylistModel playlist)
+        //{
+        //    throw new NotImplementedException();
+        //    //var names = _dbService.GetPlaylistNames();
+        //    //if (names.Contains(playlistName))
+        //    //{
+        //    //    var message = $"Playlist with name \"{playlistName}\" already exists.";
+        //    //    throw new ArgumentException(message);
+        //    //}
+        //}
+
+        //private void ValidateRoute(RouteModel route)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

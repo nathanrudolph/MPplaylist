@@ -9,16 +9,16 @@ namespace ClimbingPlaylistApi.Services
 {
     public interface IPlaylistService
     {
-        public List<PlaylistModel> Playlists { get; set; }
-
         void AddPlaylist(PlaylistModel playlist);
-        void RemovePlaylist(PlaylistModel playlist);
-        List<string> GetPlaylistNames();
-        PlaylistModel GetPlaylist(int id);
+        void CreateNewEmptyPlaylist (string newName);
+        void DeletePlaylist(PlaylistModel playlist);
+        List<PlaylistModel> Get();
+        PlaylistModel? GetPlaylistById(int id);
         void AddRouteToPlaylist(PlaylistModel playlist, RouteModel route);
-        void RemoveRouteFromPlaylist(PlaylistModel playlist, RouteModel route);
-        List<RouteModel> GetAllRoutesInPlaylist(PlaylistModel playlist);
-        RouteModel GetRouteInPlaylist(PlaylistModel playlist, string RouteMpId);
-        void RenamePlaylist(PlaylistModel playlist, string newName);
+        void DeleteRouteFromPlaylist(PlaylistModel playlist, RouteModel route);
+        //RouteModel? GetRouteInPlaylist(PlaylistModel playlist, string RouteMpId);
+        void UpdatePlaylist(PlaylistModel playlist);
+        void AddRouteToPlaylist(int playlistId, string routeUrl);
+        void DeleteRouteFromPlaylist(int playlistId, int  routeId);
     }
 }
