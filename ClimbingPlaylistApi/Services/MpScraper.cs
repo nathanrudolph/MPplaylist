@@ -5,17 +5,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MountainProjectAPI;
-using MPplaylist.Models;
+using ClimbingPlaylistApi.Models;
 
 namespace ClimbingPlaylistApi.Services
 {
     /// <summary>
-    /// Wrapper for separate MountainProjectAPI: https://github.com/derekantrican/MountainProject
+    /// Wrapper for scraper from separate MountainProjectAPI: https://github.com/derekantrican/MountainProject
     /// </summary>
-    public static class MpScraper
+    public class MpScraper : IMpScraper
     {
         //Note that this class is a wrapper for a separate open-source library, class names from that project shouldn't creep outside this class
-        public static RouteModel GetRouteFromUrl(string url)
+        public RouteModel GetRouteFromUrl(string url)
         {
             if (string.IsNullOrEmpty(url) || !url.Contains("route"))
             {
@@ -27,21 +27,21 @@ namespace ClimbingPlaylistApi.Services
             }
             MountainProjectAPI.Route route = new MountainProjectAPI.Route();
             route = new MountainProjectAPI.Route { ID = Utilities.GetID(url) };
-            Parsers.ParseRouteAsync(route).Wait();
-            
-            RouteModel output = BuildRouteModelFromScrapedRoute(route);
-            return output;
+            Parsers.ParseRouteAsync(route, false).Wait();
+
+            return BuildRouteModelFromScrapedRoute(route);
         }
 
-        private static RouteModel BuildRouteModelFromScrapedRoute(MountainProjectAPI.Route route)
+        private RouteModel BuildRouteModelFromScrapedRoute(MountainProjectAPI.Route route)
         {
-            return new RouteModel(route.Name, Int32.Parse(route.ID), route.URL)
+            return new RouteModel(route.Name, route.ID, route.URL)
             {
                 Height = (int?)route.Height.GetValue(Dimension.Units.Feet),
                 Grade = route.GetRouteGrade().ToString(),
                 Type = route.TypeString,
                 Description = route.AdditionalInfo,
-                Rating = route.Rating
+                Rating = route.Rating,
+                Popularity = route.Popularity
             };
         }
     }

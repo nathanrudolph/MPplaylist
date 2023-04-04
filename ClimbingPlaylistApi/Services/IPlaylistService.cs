@@ -1,4 +1,4 @@
-﻿using MPplaylist.Models;
+﻿using ClimbingPlaylistApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +9,16 @@ namespace ClimbingPlaylistApi.Services
 {
     public interface IPlaylistService
     {
-        AllPlaylistsModel PlaylistsModel { get; set; }
-
-        PlaylistModel CurrentPlaylist { get; set; }
-
-
+        void AddPlaylist(PlaylistModel playlist);
+        void CreateNewEmptyPlaylist (string newName);
+        void DeletePlaylist(PlaylistModel playlist);
+        List<PlaylistModel> Get();
+        PlaylistModel? GetPlaylistById(int id);
+        void AddRouteToPlaylist(PlaylistModel playlist, RouteModel route);
+        void DeleteRouteFromPlaylist(PlaylistModel playlist, RouteModel route);
+        //RouteModel? GetRouteInPlaylist(PlaylistModel playlist, string RouteMpId);
+        void UpdatePlaylist(PlaylistModel playlist);
+        void AddRouteToPlaylist(int playlistId, string routeUrl);
+        void DeleteRouteFromPlaylist(int playlistId, int  routeId);
     }
 }
