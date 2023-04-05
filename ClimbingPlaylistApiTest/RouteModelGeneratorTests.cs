@@ -27,8 +27,9 @@ namespace ClimbingPlaylistApiTest
         public void RouteModelGenerator_ShouldBuildRoute_IfInDb()
         {
             //Arrange
-            RouteModel expectedRoute = new RouteModel("Armatron", "105809181", "https://www.mountainproject.com/route/105809181/armatron");
-            _dbServiceMock.Setup(x => x.GetRoute("105809181"))
+            RouteModel expectedRoute = new RouteModel()
+            { Name = "Armatron", MpId = "105809181", Url = "https://www.mountainproject.com/route/105809181/armatron" };
+            _dbServiceMock.Setup(x => x.GetRouteByMpId("105809181").Result)
                 .Returns(expectedRoute);
 
             //Act
@@ -42,11 +43,10 @@ namespace ClimbingPlaylistApiTest
         public void RouteModelGenerator_ShouldBuildRoute_IfNotInDb()
         {
             //Arrange
-            RouteModel expectedRoute = new RouteModel("Armatron", "105809181", "https://www.mountainproject.com/route/105809181/armatron")
-            {
-            };
-            _dbServiceMock.Setup(x => x.GetRoute("105809181"))
-                .Returns(new RouteModel("","",""));
+            RouteModel expectedRoute = new RouteModel()
+            { Name = "Armatron", MpId = "105809181", Url = "https://www.mountainproject.com/route/105809181/armatron" };
+            _dbServiceMock.Setup(x => x.GetRouteByMpId("105809181").Result)
+                .Returns<RouteModel?>(null);
             _mpScraperMock.Setup(x =>
                 x.GetRouteFromUrl("https://www.mountainproject.com/route/105809181/armatron"))
                 .Returns(expectedRoute);
