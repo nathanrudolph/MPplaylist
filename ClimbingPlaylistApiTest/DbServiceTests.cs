@@ -31,17 +31,18 @@ namespace ClimbingPlaylistApiTest
         [Fact]
         public void DbService_ShouldAddRoute()
         {
-            RouteModel expectedRoute = new RouteModel("Armatron", "105809181", "https://www.mountainproject.com/route/105809181/armatron");
+            RouteModel expectedRoute = new RouteModel()
+            { Name = "Armatron", MpId = "105809181", Url = "https://www.mountainproject.com/route/105809181/armatron" };
 
             _sut.AddRoute(expectedRoute);
 
-            var routes = _sut.GetAllRoutes();
+            var routes = _sut.GetAllRoutes().Result;
 
             routes.Should().Contain(expectedRoute);
 
             _sut.RemoveRoute(expectedRoute);
 
-            routes = _sut.GetAllRoutes();
+            routes = _sut.GetAllRoutes().Result;
 
             routes.Should().NotContain(expectedRoute);
         }

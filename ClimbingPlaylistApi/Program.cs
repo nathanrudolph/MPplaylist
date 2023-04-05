@@ -16,8 +16,8 @@ builder.Services.AddDbContext<ClimbingDbContext>(options =>
 
 builder.Services.AddScoped<IDbService,DbService>();
 builder.Services.AddScoped<IPlaylistService,PlaylistService>();
-builder.Services.AddTransient<IMpScraper,MpScraper>();
-builder.Services.AddTransient<IRouteModelHandler,RouteModelHandler>();
+builder.Services.AddScoped<IMpScraper,MpScraper>();
+builder.Services.AddScoped<IRouteModelHandler,RouteModelHandler>();
 
 //builder.Services.AddControllers();
 
