@@ -18,6 +18,7 @@ namespace ClimbingPlaylistApi.Services
         {
             await db.AddAsync(playlist);
             await db.SaveChangesAsync();
+            //return playlist.Id;
         }
 
         public async Task UpdatePlaylist(PlaylistModel playlist)
@@ -55,12 +56,12 @@ namespace ClimbingPlaylistApi.Services
             await db.SaveChangesAsync();
         }
 
-        public async Task<RouteModel?> GetRoute(string MpId)
+        public async Task<RouteModel?> GetRouteByMpId(string MpId)
         {
             return await db.Routes.FirstOrDefaultAsync(r => r.MpId == MpId);
         }
 
-        public async Task<RouteModel?> GetRoute(int Id)
+        public async Task<RouteModel?> GetRouteById(int Id)
         {
             return await db.Routes.FirstOrDefaultAsync(r => r.Id == Id);
         }

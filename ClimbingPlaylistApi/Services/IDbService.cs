@@ -13,8 +13,8 @@ namespace ClimbingPlaylistApi.Services
         Task UpdateRoute(RouteModel route);
         Task<List<PlaylistModel>> GetAllPlaylists();
         Task<List<RouteModel>> GetAllRoutes();
-        Task<RouteModel?> GetRoute(string MpId);
-        Task<RouteModel?> GetRoute(int id);
+        Task<RouteModel?> GetRouteByMpId(string MpId);
+        Task<RouteModel?> GetRouteById(int id);
         Task<List<RouteModel>> GetRoutesInPlaylist(int PlaylistId);
         Task<List<string>> GetPlaylistNames();
     }
