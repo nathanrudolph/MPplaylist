@@ -20,8 +20,8 @@ namespace ClimbingPlaylistApi.Domain
             _mpScraper = mpScraper;
         }
 
-        private IDbService _dbService;
-        private IMpScraper _mpScraper;
+        private readonly IDbService _dbService;
+        private readonly IMpScraper _mpScraper;
 
         /// <summary>
         /// Returns a RouteModel object for a given MP URL. Will scrape from web if route is not already in db.
