@@ -9,10 +9,10 @@ using Microsoft.Identity.Client;
 
 namespace ClimbingPlaylistApi.Database
 {
-    public class ClimbingDbContext : DbContext, IClimbingDbContext
+    public class ClimbingDbContext : DbContext
     {
-        public DbSet<RouteModel> Routes { get; set; }
-        public DbSet<PlaylistModel> Playlists { get; set; }
+        public virtual DbSet<RouteModel> Routes { get; set; }
+        public virtual DbSet<PlaylistModel> Playlists { get; set; }
 
         public ClimbingDbContext(DbContextOptions options) : base(options)
         {

@@ -4,18 +4,18 @@ namespace ClimbingPlaylistApi.Services
 {
     public interface IDbService
     {
-        void AddPlaylist(PlaylistModel playlist);
-        void AddRoute(RouteModel route);
-        void RemovePlaylist(PlaylistModel playlist);
-        void RemoveRoute(RouteModel route);
-        PlaylistModel? GetPlaylist(int playlistId);
-        void UpdatePlaylist(PlaylistModel playlist);
-        void UpdateRoute(RouteModel route);
-        List<PlaylistModel> GetAllPlaylists();
-        List<RouteModel> GetAllRoutes();
-        RouteModel? GetRoute(string MpId);
-        RouteModel? GetRoute(int id);
-        List<RouteModel> GetRoutesInPlaylist(int PlaylistId);
-        List<string> GetPlaylistNames();
+        Task AddPlaylist(PlaylistModel playlist);
+        Task AddRoute(RouteModel route);
+        Task RemovePlaylist(PlaylistModel playlist);
+        Task RemoveRoute(RouteModel route);
+        Task<PlaylistModel?> GetPlaylist(int playlistId);
+        Task UpdatePlaylist(PlaylistModel playlist);
+        Task UpdateRoute(RouteModel route);
+        Task<List<PlaylistModel>> GetAllPlaylists();
+        Task<List<RouteModel>> GetAllRoutes();
+        Task<RouteModel?> GetRoute(string MpId);
+        Task<RouteModel?> GetRoute(int id);
+        Task<List<RouteModel>> GetRoutesInPlaylist(int PlaylistId);
+        Task<List<string>> GetPlaylistNames();
     }
 }

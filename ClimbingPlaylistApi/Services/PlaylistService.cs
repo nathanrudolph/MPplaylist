@@ -27,7 +27,7 @@ namespace ClimbingPlaylistApi.Services
 
         public void CreateNewEmptyPlaylist(string playlistName)
         {
-            _dbService.AddPlaylist(new PlaylistModel(playlistName));
+            _dbService.AddPlaylist(new PlaylistModel() { Name=playlistName});
             //TODO: add dbService notification of new Id to pass back to user
         }
 
@@ -38,12 +38,12 @@ namespace ClimbingPlaylistApi.Services
 
         public List<string> GetPlaylistNames()
         {
-            return _dbService.GetPlaylistNames();
+            return _dbService.GetPlaylistNames().Result;
         }
 
         public PlaylistModel? GetPlaylistById(int id)
         {
-            return _dbService.GetPlaylist(id);
+            return _dbService.GetPlaylist(id).Result;
         }
 
         public void AddRouteToPlaylist(PlaylistModel playlist, RouteModel route)
@@ -55,6 +55,7 @@ namespace ClimbingPlaylistApi.Services
             }
             playlist.Routes.Add(route);
             _dbService.UpdatePlaylist(playlist);
+
         }
 
         public void AddRouteToPlaylist(PlaylistModel playlist, string routeUrl)
@@ -100,13 +101,13 @@ namespace ClimbingPlaylistApi.Services
 
         public List<PlaylistModel> Get()
         {
-            return _dbService.GetAllPlaylists();
+            return _dbService.GetAllPlaylists().Result;
         }
 
         public void AddRouteToPlaylist(int playlistId, string routeUrl)
         {
             RouteModel route = _routeHandler.GetRoute(routeUrl);
-            PlaylistModel? playlist = _dbService.GetPlaylist(playlistId);
+            PlaylistModel? playlist = _dbService.GetPlaylist(playlistId).Result;
             if (playlist == null) { throw new KeyNotFoundException($"Playlist with ID {playlistId} was not found."); }
             AddRouteToPlaylist(playlist, route);
         }
@@ -114,7 +115,7 @@ namespace ClimbingPlaylistApi.Services
         public void DeleteRouteFromPlaylist(int playlistId, int routeId)
         {
             //RouteModel route = _dbService.GetRoute(routeId);
-            PlaylistModel? playlist = _dbService.GetPlaylist(playlistId);
+            PlaylistModel? playlist = _dbService.GetPlaylist(playlistId).Result;
             if (playlist == null)
             {
                 throw new KeyNotFoundException($"Playlist with ID {playlistId} was not found.");

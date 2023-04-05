@@ -14,81 +14,75 @@ namespace ClimbingPlaylistApi.Services
 
         private readonly ClimbingDbContext db;
 
-        public void AddPlaylist(PlaylistModel playlist)
+        public async Task AddPlaylist(PlaylistModel playlist)
         {
-            db.Add(playlist);
-            db.SaveChanges();
+            await db.AddAsync(playlist);
+            await db.SaveChangesAsync();
         }
 
-        public void UpdatePlaylist(PlaylistModel playlist)
+        public async Task UpdatePlaylist(PlaylistModel playlist)
         {
             db.Update(playlist);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public void RemovePlaylist(PlaylistModel playlist)
+        public async Task RemovePlaylist(PlaylistModel playlist)
         {
             db.Remove(playlist);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public PlaylistModel? GetPlaylist(int playlistId)
+        public async Task<PlaylistModel?> GetPlaylist(int playlistId)
         {
-            return db.Playlists.Where(p => p.Id == playlistId).Include(p => p.Routes).First();
+            return await db.Playlists.Include(p => p.Routes).FirstOrDefaultAsync(p => p.Id == playlistId);
         }
 
-        public void AddRoute(RouteModel route)
+        public async Task AddRoute(RouteModel route)
         {
-            db.Add(route);
-            db.SaveChanges();
+            await db.AddAsync(route);
+            await db.SaveChangesAsync();
         }
 
-        public void UpdateRoute(RouteModel route)
+        public async Task UpdateRoute(RouteModel route)
         {
             db.Update(route);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public void RemoveRoute(RouteModel route)
+        public async Task RemoveRoute(RouteModel route)
         {
             db.Remove(route);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public RouteModel? GetRoute(string MpId)
+        public async Task<RouteModel?> GetRoute(string MpId)
         {
-            return db.Routes.Where(r => r.MpId == MpId).FirstOrDefault();
+            return await db.Routes.FirstOrDefaultAsync(r => r.MpId == MpId);
         }
 
-        public RouteModel? GetRoute(int Id)
+        public async Task<RouteModel?> GetRoute(int Id)
         {
-            return db.Routes.Where(r => r.Id == Id).FirstOrDefault();
+            return await db.Routes.FirstOrDefaultAsync(r => r.Id == Id);
         }
 
-        public List<PlaylistModel> GetAllPlaylists()
+        public async Task<List<PlaylistModel>> GetAllPlaylists()
         {
-            return db.Playlists.Include(p => p.Routes).ToList();
+            return await db.Playlists.ToListAsync();
         }
 
-        public List<RouteModel> GetAllRoutes()
+        public async Task<List<RouteModel>> GetAllRoutes()
         {
-            return db.Routes.ToList();
+            return await db.Routes.ToListAsync();
         }
 
-        public List<RouteModel> GetRoutesInPlaylist(int PlaylistId)
+        public async Task<List<RouteModel>> GetRoutesInPlaylist(int PlaylistId)
         {
-            var playlist = db.Playlists.Where(p => p.Id == PlaylistId).FirstOrDefault();
-            if (playlist == null)
-            {
-                var message = $"Playlist with ID {PlaylistId} was not found.";
-                throw new ArgumentException(message);
-            }
-            return playlist.Routes.ToList();
+            return await db.Routes.Where(r => r.PlaylistModelId == PlaylistId).ToListAsync();
         }
 
-        public List<string> GetPlaylistNames()
+        public async Task<List<string>> GetPlaylistNames()
         {
-            return db.Playlists.Select(p => p.Name).ToList();
+            return await db.Playlists.Select(p => p.Name).ToListAsync();
         }
     }
 }
