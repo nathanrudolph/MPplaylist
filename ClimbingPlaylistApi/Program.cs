@@ -19,7 +19,7 @@ builder.Services.AddScoped<IPlaylistService,PlaylistService>();
 builder.Services.AddScoped<IMpScraper,MpScraper>();
 builder.Services.AddScoped<IRouteModelHandler,RouteModelHandler>();
 
-//builder.Services.AddControllers();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -29,9 +29,8 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
-app.ConnectPlaylistEndpoints();
+app.MapControllers();
 
 //app.UseAuthorization();
-//app.MapControllers();
 
 app.Run();
