@@ -29,7 +29,7 @@ namespace ClimbingPlaylistApiTest
             //Arrange
             RouteModel expectedRoute = new RouteModel()
             { Name = "Armatron", MpId = "105809181", Url = "https://www.mountainproject.com/route/105809181/armatron" };
-            _dbServiceMock.Setup(x => x.GetRouteByMpId("105809181").Result)
+            _dbServiceMock.Setup(x => x.GetRouteByMpIdAsync("105809181").Result)
                 .Returns(expectedRoute);
 
             //Act
@@ -45,7 +45,7 @@ namespace ClimbingPlaylistApiTest
             //Arrange
             RouteModel expectedRoute = new RouteModel()
             { Name = "Armatron", MpId = "105809181", Url = "https://www.mountainproject.com/route/105809181/armatron" };
-            _dbServiceMock.Setup(x => x.GetRouteByMpId("105809181").Result)
+            _dbServiceMock.Setup(x => x.GetRouteByMpIdAsync("105809181").Result)
                 .Returns<RouteModel?>(null);
             _mpScraperMock.Setup(x =>
                 x.GetRouteFromUrl("https://www.mountainproject.com/route/105809181/armatron"))

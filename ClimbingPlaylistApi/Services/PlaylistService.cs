@@ -22,28 +22,28 @@ namespace ClimbingPlaylistApi.Services
 
         public void AddPlaylist(PlaylistModel playlist)
         {
-            _dbService.AddPlaylist(playlist);
+            _dbService.AddPlaylistAsync(playlist);
         }
 
         public void CreateNewEmptyPlaylist(string playlistName)
         {
-            _dbService.AddPlaylist(new PlaylistModel() { Name=playlistName});
+            _dbService.AddPlaylistAsync(new PlaylistModel() { Name=playlistName});
             //TODO: add dbService notification of new Id to pass back to user
         }
 
         public void DeletePlaylist(PlaylistModel playlist)
         {
-            _dbService.RemovePlaylist(playlist);
+            _dbService.DeletePlaylistAsync(playlist);
         }
 
         public List<string> GetPlaylistNames()
         {
-            return _dbService.GetPlaylistNames().Result;
+            return _dbService.GetPlaylistNamesAsync().Result;
         }
 
         public PlaylistModel? GetPlaylistById(int id)
         {
-            return _dbService.GetPlaylist(id).Result;
+            return _dbService.GetPlaylistAsync(id).Result;
         }
 
         public void AddRouteToPlaylist(PlaylistModel playlist, RouteModel route)
@@ -54,7 +54,7 @@ namespace ClimbingPlaylistApi.Services
                 throw new ArgumentException(message);
             }
             playlist.Routes.Add(route);
-            _dbService.UpdatePlaylist(playlist);
+            _dbService.UpdatePlaylistAsync(playlist);
 
         }
 
@@ -62,7 +62,7 @@ namespace ClimbingPlaylistApi.Services
         {
             var route = _routeHandler.GetRoute(routeUrl);
             playlist.Routes.Add(route);
-            _dbService.UpdatePlaylist(playlist);
+            _dbService.UpdatePlaylistAsync(playlist);
         }
 
         public void DeleteRouteFromPlaylist(PlaylistModel playlist, RouteModel route)
@@ -73,7 +73,7 @@ namespace ClimbingPlaylistApi.Services
                 throw new ArgumentException(message);
             }
             playlist.Routes.Remove(route);
-            _dbService.UpdatePlaylist(playlist);
+            _dbService.UpdatePlaylistAsync(playlist);
         }
 
         //public List<RouteModel> GetAllRoutesInPlaylist(PlaylistModel playlist)
@@ -96,18 +96,18 @@ namespace ClimbingPlaylistApi.Services
 
         public void UpdatePlaylist(PlaylistModel playlist)
         {
-            _dbService.UpdatePlaylist(playlist);
+            _dbService.UpdatePlaylistAsync(playlist);
         }
 
         public List<PlaylistModel> Get()
         {
-            return _dbService.GetAllPlaylists().Result;
+            return _dbService.GetAllPlaylistsAsync().Result;
         }
 
         public void AddRouteToPlaylist(int playlistId, string routeUrl)
         {
             RouteModel route = _routeHandler.GetRoute(routeUrl);
-            PlaylistModel? playlist = _dbService.GetPlaylist(playlistId).Result;
+            PlaylistModel? playlist = _dbService.GetPlaylistAsync(playlistId).Result;
             if (playlist == null) { throw new KeyNotFoundException($"Playlist with ID {playlistId} was not found."); }
             AddRouteToPlaylist(playlist, route);
         }
@@ -115,7 +115,7 @@ namespace ClimbingPlaylistApi.Services
         public void DeleteRouteFromPlaylist(int playlistId, int routeId)
         {
             //RouteModel route = _dbService.GetRoute(routeId);
-            PlaylistModel? playlist = _dbService.GetPlaylist(playlistId).Result;
+            PlaylistModel? playlist = _dbService.GetPlaylistAsync(playlistId).Result;
             if (playlist == null)
             {
                 throw new KeyNotFoundException($"Playlist with ID {playlistId} was not found.");

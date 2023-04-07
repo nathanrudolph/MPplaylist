@@ -29,20 +29,24 @@ namespace ClimbingPlaylistApiTest
         }
 
         [Fact]
-        public void DbService_ShouldAddRoute()
+        public async Task DbService_ShouldAddRoute()
         {
             RouteModel expectedRoute = new RouteModel()
             { Name = "Armatron", MpId = "105809181", Url = "https://www.mountainproject.com/route/105809181/armatron" };
 
-            _sut.AddRoute(expectedRoute);
+            _sut.AddRouteAsync(expectedRoute);
 
-            var routes = _sut.GetAllRoutes().Result;
+            await _sut.GetAllRoutesAsync();
+
+            var routes = _sut.GetAllRoutesAsync().Result;
 
             routes.Should().Contain(expectedRoute);
 
-            _sut.RemoveRoute(expectedRoute);
+            await _sut.DeleteRouteAsync(expectedRoute);
 
-            routes = _sut.GetAllRoutes().Result;
+            await _sut.GetAllRoutesAsync();
+
+            routes = _sut.GetAllRoutesAsync().Result;
 
             routes.Should().NotContain(expectedRoute);
         }

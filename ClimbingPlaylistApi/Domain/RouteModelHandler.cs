@@ -32,7 +32,7 @@ namespace ClimbingPlaylistApi.Domain
         {
             RouteUrl routeUrl = new RouteUrl(url);
             string MpId = routeUrl.GetRouteId();
-            var route = _dbService.GetRouteByMpId(MpId).Result;
+            var route = _dbService.GetRouteByMpIdAsync(MpId).Result;
             if (route == null)
             {
                 route = GetRouteFromScraper(url);

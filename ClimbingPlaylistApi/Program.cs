@@ -1,6 +1,5 @@
 using ClimbingPlaylistApi.Database;
 using ClimbingPlaylistApi.Domain;
-using ClimbingPlaylistApi.Endpoints;
 using ClimbingPlaylistApi.Services;
 using Microsoft.EntityFrameworkCore;
 
