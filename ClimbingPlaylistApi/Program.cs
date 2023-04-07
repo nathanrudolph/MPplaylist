@@ -2,6 +2,7 @@ using ClimbingPlaylistApi.Database;
 using ClimbingPlaylistApi.Domain;
 using ClimbingPlaylistApi.Services;
 using Microsoft.EntityFrameworkCore;
+using MpScraper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddScoped<IDbService,DbService>();
 builder.Services.AddScoped<IPlaylistService,PlaylistService>();
 builder.Services.AddScoped<IMpScraperAdapter,MpScraperAdapter>();
 builder.Services.AddScoped<IRouteModelHandler,RouteModelHandler>();
+builder.Services.AddScoped<IMpScraper,MpScraper.MpScraper>();
 
 builder.Services.AddControllers();
 
