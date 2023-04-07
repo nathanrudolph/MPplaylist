@@ -15,14 +15,13 @@ builder.Services.AddDbContext<ClimbingDbContext>(options =>
 
 builder.Services.AddScoped<IDbService,DbService>();
 builder.Services.AddScoped<IPlaylistService,PlaylistService>();
-builder.Services.AddScoped<IMpScraper,MpScraper>();
+builder.Services.AddScoped<IMpScraperAdapter,MpScraperAdapter>();
 builder.Services.AddScoped<IRouteModelHandler,RouteModelHandler>();
 
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI();
 

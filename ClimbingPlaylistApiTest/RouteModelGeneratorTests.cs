@@ -16,7 +16,7 @@ namespace ClimbingPlaylistApiTest
     {
         private readonly RouteModelHandler _sut;
         private readonly Mock<IDbService> _dbServiceMock = new Mock<IDbService>();
-        private readonly Mock<IMpScraper> _mpScraperMock = new Mock<IMpScraper>();
+        private readonly Mock<IMpScraperAdapter> _mpScraperMock = new Mock<IMpScraperAdapter>();
 
         public RouteModelGeneratorTests() 
         {
@@ -48,7 +48,7 @@ namespace ClimbingPlaylistApiTest
             _dbServiceMock.Setup(x => x.GetRouteByMpIdAsync("105809181").Result)
                 .Returns<RouteModel?>(null);
             _mpScraperMock.Setup(x =>
-                x.GetRouteFromUrl("https://www.mountainproject.com/route/105809181/armatron"))
+                x.GetRouteModelFromUrl("https://www.mountainproject.com/route/105809181/armatron"))
                 .Returns(expectedRoute);
 
             //Act
