@@ -14,11 +14,11 @@ namespace ClimbingPlaylistApi.Services
 
         private readonly ClimbingDbContext db;
 
-        public async Task AddPlaylistAsync(PlaylistModel playlist)
+        public async Task<int> AddPlaylistAsync(PlaylistModel playlist)
         {
             await db.AddAsync(playlist);
             await db.SaveChangesAsync();
-            //return playlist.Id;
+            return playlist.Id;
         }
 
         public async Task UpdatePlaylistAsync(PlaylistModel playlist)

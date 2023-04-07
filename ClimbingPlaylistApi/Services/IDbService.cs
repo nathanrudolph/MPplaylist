@@ -4,7 +4,7 @@ namespace ClimbingPlaylistApi.Services
 {
     public interface IDbService
     {
-        Task AddPlaylistAsync(PlaylistModel playlist);
+        Task<int> AddPlaylistAsync(PlaylistModel playlist);
         Task AddRouteAsync(RouteModel route);
         Task DeletePlaylistAsync(PlaylistModel playlist);
         Task DeleteRouteAsync(RouteModel route);

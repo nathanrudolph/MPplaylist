@@ -10,7 +10,7 @@ namespace ClimbingPlaylistApi.Services
     public interface IPlaylistService
     {
         void AddPlaylist(PlaylistModel playlist);
-        void CreateNewEmptyPlaylist (string newName);
+        Task<int> AddNewEmptyPlaylist (string newName);
         void DeletePlaylist(PlaylistModel playlist);
         List<PlaylistModel> Get();
         PlaylistModel? GetPlaylistById(int id);

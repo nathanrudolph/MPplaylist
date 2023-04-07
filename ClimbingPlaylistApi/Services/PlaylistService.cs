@@ -25,10 +25,10 @@ namespace ClimbingPlaylistApi.Services
             _dbService.AddPlaylistAsync(playlist);
         }
 
-        public void CreateNewEmptyPlaylist(string playlistName)
+        public async Task<int> AddNewEmptyPlaylist(string playlistName)
         {
-            _dbService.AddPlaylistAsync(new PlaylistModel() { Name=playlistName});
-            //TODO: add dbService notification of new Id to pass back to user
+            int id = await _dbService.AddPlaylistAsync(new PlaylistModel() { Name=playlistName});
+            return id;
         }
 
         public void DeletePlaylist(PlaylistModel playlist)

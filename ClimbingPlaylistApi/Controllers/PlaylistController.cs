@@ -50,19 +50,15 @@ namespace ClimbingPlaylistApi.Controllers
             }
         }
 
-        // POST api/<PlaylistController>
         [HttpPost]
-        public IResult Post([FromBody] PlaylistModel playlist, IPlaylistService playlistService)
+        public async Task<IResult> PostNewEmptyPlaylist([FromBody] string playlistName, IPlaylistService playlistService)
         {
             try
             {
-                playlistService.AddPlaylist(playlist);
-                return Results.Ok(); //add playlist.Id to return
+                int id = await playlistService.AddNewEmptyPlaylist(playlistName);
+                return Results.Ok(id);
             }
-            catch (Exception ex)
-            {
-                return Results.Problem(ex.Message);
-            }
+            catch (Exception ex) { return Results.Problem(ex.Message);}
         }
 
         // PUT api/<PlaylistController>/5
