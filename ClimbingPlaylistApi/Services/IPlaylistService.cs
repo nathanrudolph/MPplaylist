@@ -9,16 +9,15 @@ namespace ClimbingPlaylistApi.Services
 {
     public interface IPlaylistService
     {
-        void AddPlaylist(PlaylistModel playlist);
-        Task<int> AddNewEmptyPlaylist (string newName);
-        void DeletePlaylist(PlaylistModel playlist);
-        List<PlaylistModel> Get();
-        PlaylistModel? GetPlaylistById(int id);
-        void AddRouteToPlaylist(PlaylistModel playlist, RouteModel route);
-        void DeleteRouteFromPlaylist(PlaylistModel playlist, RouteModel route);
-        //RouteModel? GetRouteInPlaylist(PlaylistModel playlist, string RouteMpId);
-        void UpdatePlaylist(PlaylistModel playlist);
-        void AddRouteToPlaylist(int playlistId, string routeUrl);
-        void DeleteRouteFromPlaylist(int playlistId, int  routeId);
+        Task<List<PlaylistModel>> GetAsync();
+        Task<PlaylistModel?> GetPlaylistByIdAsync(int id);
+        Task<int> AddNewEmptyPlaylistAsync (string playlistName);
+        Task UpdatePlaylist(PlaylistModel playlist);
+        Task DeletePlaylist(PlaylistModel playlist);
+        Task<int> AddRouteToPlaylistByUrlAsync(int playlistId, string routeUrl);
+        Task<int> AddRouteModelToPlaylistModelAsync(PlaylistModel playlist, RouteModel route);
+        Task<bool> DeleteRouteModelFromPlaylistModelAsync(PlaylistModel playlist, RouteModel route);
+        
+        Task<bool> DeleteRouteFromPlaylistByUrlAsync(int playlistId, int  routeId);
     }
 }

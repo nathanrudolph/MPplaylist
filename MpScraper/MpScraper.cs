@@ -39,6 +39,23 @@ namespace MpScraper
             SetPropertiesToExpose(route);
         }
 
+        public async Task ScrapeRouteFromUrlAsync(string url)
+        {
+            if (string.IsNullOrEmpty(url) || !url.Contains("route"))
+            {
+                throw new ArgumentException("Url is not a valid MP route page.");
+            }
+            if (!MountainProjectAPI.Url.Contains(url, Utilities.MPBASEURL))
+            {
+                url = MountainProjectAPI.Url.BuildFullUrl(Utilities.MPBASEURL + url);
+            }
+            MountainProjectAPI.Route route = new MountainProjectAPI.Route();
+            route = new MountainProjectAPI.Route { ID = Utilities.GetID(url) };
+            await Parsers.ParseRouteAsync(route, false);
+
+            SetPropertiesToExpose(route);
+        }
+
         private void SetPropertiesToExpose(MountainProjectAPI.Route route)
         {
             this.Name = route.Name;

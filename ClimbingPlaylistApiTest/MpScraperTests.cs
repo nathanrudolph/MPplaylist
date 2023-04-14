@@ -32,6 +32,24 @@ namespace ClimbingPlaylistApiTest
             result.MpId.Should().Be(expectedId);
         }
 
+        [Theory]
+        [MemberData(nameof(TestData))]
+        public async Task MpScraper_ShouldScrapeRouteAsync(string expectedName, string expectedId, string urlToScrape)
+        {
+            //Arrange
+            IMpScraper _mpScraper = new MpScraper.MpScraper();
+            MpScraperAdapter scraper = new MpScraperAdapter(_mpScraper);
+            RouteModel? result;
+
+            //Act
+            result = await scraper.GetRouteModelFromUrlAsync(urlToScrape);
+
+            //Assert
+            result.Should().NotBeNull();
+            result!.Name.Should().Be(expectedName);
+            result.MpId.Should().Be(expectedId);
+        }
+
         public static IEnumerable<object[]> TestData()
         {
             yield return new object[] { "The Nightcrawler", "105920684" , "https://www.mountainproject.com/route/105920684/the-nightcrawler" };

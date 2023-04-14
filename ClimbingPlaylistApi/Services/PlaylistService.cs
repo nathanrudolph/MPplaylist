@@ -1,6 +1,7 @@
 ﻿using ClimbingPlaylistApi.Domain;
 using ClimbingPlaylistApi.Models;
 using ClimbingPlaylistApi.Validators;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,60 +21,78 @@ namespace ClimbingPlaylistApi.Services
         private IRouteModelHandler _routeHandler { get; set; }
         private IDbService _dbService { get; set; }
 
-        public void AddPlaylist(PlaylistModel playlist)
+        public async Task<List<PlaylistModel>> GetAsync()
         {
-            _dbService.AddPlaylistAsync(playlist);
+            return await _dbService.GetAllPlaylistsAsync();
         }
 
-        public async Task<int> AddNewEmptyPlaylist(string playlistName)
+        public async Task<PlaylistModel?> GetPlaylistByIdAsync(int id)
+        {
+            return await _dbService.GetPlaylistAsync(id);
+        }
+
+        public async Task<int> AddNewEmptyPlaylistAsync(string playlistName)
         {
             int id = await _dbService.AddPlaylistAsync(new PlaylistModel() { Name=playlistName});
             return id;
         }
 
-        public void DeletePlaylist(PlaylistModel playlist)
+        public async Task DeletePlaylist(PlaylistModel playlist)
         {
-            _dbService.DeletePlaylistAsync(playlist);
+            await _dbService.DeletePlaylistAsync(playlist);
         }
 
-        public List<string> GetPlaylistNames()
-        {
-            return _dbService.GetPlaylistNamesAsync().Result;
-        }
+        //public List<string> GetPlaylistNames()
+        //{
+        //    return _dbService.GetPlaylistNamesAsync().Result;
+        //}
 
-        public PlaylistModel? GetPlaylistById(int id)
-        {
-            return _dbService.GetPlaylistAsync(id).Result;
-        }
-
-        public void AddRouteToPlaylist(PlaylistModel playlist, RouteModel route)
+        public async Task<int> AddRouteModelToPlaylistModelAsync(PlaylistModel playlist, RouteModel route)
         {
             if (playlist.Routes.Any(r => r.MpId == route.MpId))
             {
-                var message = $"Route \"{route.Name}\" is already in this playlist.";
-                throw new ArgumentException(message);
+                return -3;
             }
             playlist.Routes.Add(route);
-            _dbService.UpdatePlaylistAsync(playlist);
-
+            await _dbService.UpdatePlaylistAsync(playlist);
+            return route.Id;
         }
 
-        public void AddRouteToPlaylist(PlaylistModel playlist, string routeUrl)
+        public async Task<int> AddRouteToPlaylistByUrlAsync(int playlistId, string routeUrl)
         {
-            var route = _routeHandler.GetRoute(routeUrl);
-            playlist.Routes.Add(route);
-            _dbService.UpdatePlaylistAsync(playlist);
+            RouteModel? route = await _routeHandler.GetRoute(routeUrl);
+            if (route == null)
+                { return -1; }
+            PlaylistModel? playlist = await _dbService.GetPlaylistAsync(playlistId);
+            if (playlist == null)
+                { return -2; }
+            int newRouteId = await AddRouteModelToPlaylistModelAsync(playlist, route);
+            return newRouteId;
         }
 
-        public void DeleteRouteFromPlaylist(PlaylistModel playlist, RouteModel route)
+        //public async Task<int> AddRouteToPlaylistAsync(PlaylistModel playlist, string routeUrl)
+        //{
+        //    var route = _routeHandler.GetRoute(routeUrl);
+        //    if (route == null)
+        //    {
+        //        return 0;
+        //    }
+        //    playlist.Routes.Add(route);
+        //    await _dbService.UpdatePlaylistAsync(playlist);
+        //    return route.Id;
+        //}
+
+        public async Task<bool> DeleteRouteModelFromPlaylistModelAsync(PlaylistModel playlist, RouteModel route)
         {
             if (!playlist.Routes.Any(r => r.MpId == route.MpId))
             {
-                var message = $"Route \"{route.Name}\" was not found in playlist {playlist.Id}.";
-                throw new ArgumentException(message);
+                //var message = $"Route \"{route.Name}\" was not found in playlist {playlist.Id}.";
+                //throw new ArgumentException(message);
+                return false;
             }
             playlist.Routes.Remove(route);
-            _dbService.UpdatePlaylistAsync(playlist);
+            await _dbService.UpdatePlaylistAsync(playlist);
+            return true;
         }
 
         //public List<RouteModel> GetAllRoutesInPlaylist(PlaylistModel playlist)
@@ -94,38 +113,27 @@ namespace ClimbingPlaylistApi.Services
         //    }
         //}
 
-        public void UpdatePlaylist(PlaylistModel playlist)
+        public async Task UpdatePlaylist(PlaylistModel playlist)
         {
-            _dbService.UpdatePlaylistAsync(playlist);
+            await _dbService.UpdatePlaylistAsync(playlist);
         }
 
-        public List<PlaylistModel> Get()
-        {
-            return _dbService.GetAllPlaylistsAsync().Result;
-        }
-
-        public void AddRouteToPlaylist(int playlistId, string routeUrl)
-        {
-            RouteModel route = _routeHandler.GetRoute(routeUrl);
-            PlaylistModel? playlist = _dbService.GetPlaylistAsync(playlistId).Result;
-            if (playlist == null) { throw new KeyNotFoundException($"Playlist with ID {playlistId} was not found."); }
-            AddRouteToPlaylist(playlist, route);
-        }
-
-        public void DeleteRouteFromPlaylist(int playlistId, int routeId)
+        public async Task<bool> DeleteRouteFromPlaylistByUrlAsync(int playlistId, int routeId)
         {
             //RouteModel route = _dbService.GetRoute(routeId);
             PlaylistModel? playlist = _dbService.GetPlaylistAsync(playlistId).Result;
             if (playlist == null)
             {
-                throw new KeyNotFoundException($"Playlist with ID {playlistId} was not found.");
+                //throw new KeyNotFoundException($"Playlist with ID {playlistId} was not found.")
+                return false;
             }
             RouteModel? route = playlist.Routes.Where(r => r.Id == routeId).FirstOrDefault();
             if (route == null)
             {
-                throw new KeyNotFoundException($"Route with ID {routeId} was not found in playlist {playlistId}.");
+                //throw new KeyNotFoundException($"Route with ID {routeId} was not found in playlist {playlistId}.");
+                return false;
             }
-            DeleteRouteFromPlaylist(playlist, route);
+            return await DeleteRouteModelFromPlaylistModelAsync(playlist, route);
         }
 
         //private void ValidatePlaylist(PlaylistModel playlist)

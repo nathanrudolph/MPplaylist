@@ -28,14 +28,14 @@ namespace ClimbingPlaylistApi.Domain
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public RouteModel? GetRoute(string url)
+        public async Task<RouteModel?> GetRoute(string url)
         {
             RouteUrl routeUrl = new RouteUrl(url);
             string MpId = routeUrl.GetRouteId();
-            var route = _dbService.GetRouteByMpIdAsync(MpId).Result;
+            var route = await _dbService.GetRouteByMpIdAsync(MpId);
             if (route == null)
             {
-                route = _mpScraperAdapter.GetRouteModelFromUrl(url);
+                route = await _mpScraperAdapter.GetRouteModelFromUrlAsync(url);
             }
             return route;
         }

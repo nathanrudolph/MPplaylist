@@ -3,6 +3,7 @@
     public interface IMpScraper
     {
         void ScrapeRouteFromUrl(string url);
+        Task ScrapeRouteFromUrlAsync(string url);
         string? Name { get; }
         string? MpId { get; }
         string? Url { get; }

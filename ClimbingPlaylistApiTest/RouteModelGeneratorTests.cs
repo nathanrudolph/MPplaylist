@@ -24,7 +24,7 @@ namespace ClimbingPlaylistApiTest
         }
 
         [Fact]
-        public void RouteModelGenerator_ShouldBuildRoute_IfInDb()
+        public async Task RouteModelGenerator_ShouldBuildRoute_IfInDb()
         {
             //Arrange
             RouteModel expectedRoute = new RouteModel()
@@ -33,14 +33,14 @@ namespace ClimbingPlaylistApiTest
                 .Returns(expectedRoute);
 
             //Act
-            var result = _sut.GetRoute("https://www.mountainproject.com/route/105809181/armatron");
+            var result = await _sut.GetRoute("https://www.mountainproject.com/route/105809181/armatron");
 
             //Assert
             result.Should().Be(expectedRoute);
         }
 
         [Fact]
-        public void RouteModelGenerator_ShouldBuildRoute_IfNotInDb()
+        public async Task RouteModelGenerator_ShouldBuildRoute_IfNotInDb()
         {
             //Arrange
             RouteModel expectedRoute = new RouteModel()
@@ -48,11 +48,11 @@ namespace ClimbingPlaylistApiTest
             _dbServiceMock.Setup(x => x.GetRouteByMpIdAsync("105809181").Result)
                 .Returns<RouteModel?>(null);
             _mpScraperMock.Setup(x =>
-                x.GetRouteModelFromUrl("https://www.mountainproject.com/route/105809181/armatron"))
+                x.GetRouteModelFromUrlAsync("https://www.mountainproject.com/route/105809181/armatron").Result)
                 .Returns(expectedRoute);
 
             //Act
-            var result = _sut.GetRoute("https://www.mountainproject.com/route/105809181/armatron");
+            var result = await _sut.GetRoute("https://www.mountainproject.com/route/105809181/armatron");
 
             //Assert
             result.Should().Be(expectedRoute);
