@@ -19,11 +19,11 @@ namespace ClimbingPlaylistApi.Controllers
 
         // GET api/<PlaylistController>
         [HttpGet]
-        public async Task<IResult> Get(IPlaylistService playlistService)
+        public async Task<IResult> GetPlaylist()
         {
             try
             {
-                return Results.Ok(await playlistService.GetAsync());
+                return Results.Ok(await _playlistService.GetAsync());
             }
             catch (Exception ex)
             {
@@ -33,11 +33,11 @@ namespace ClimbingPlaylistApi.Controllers
 
         // GET api/<PlaylistController>/5
         [HttpGet("{id}")]
-        public async Task<IResult> GetById(int id, IPlaylistService playlistService)
+        public async Task<IResult> GetPlaylistById(int id)
         {
             try
             {
-                var output = await playlistService.GetPlaylistByIdAsync(id);
+                var output = await _playlistService.GetPlaylistByIdAsync(id);
                 if (output == null)
                 {
                     return Results.NotFound();
@@ -51,51 +51,59 @@ namespace ClimbingPlaylistApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IResult> PostNewEmptyPlaylist([FromBody] string playlistName, IPlaylistService playlistService)
+        public async Task<IResult> PostNewEmptyPlaylist([FromBody] string playlistName)
         {
             try
             {
-                int id = await playlistService.AddNewEmptyPlaylistAsync(playlistName);
+                int id = await _playlistService.AddNewEmptyPlaylistAsync(playlistName);
                 return Results.Ok(id);
             }
             catch (Exception ex) { return Results.Problem(ex.Message);}
         }
 
-        //// PUT api/<PlaylistController>/5
-        //[HttpPut("{id}")]
-        //public IResult Put([FromBody] PlaylistModel playlist, IPlaylistService playlistService)
-        //{
-        //    try
-        //    {
-        //        playlistService.UpdatePlaylist(playlist);
-        //        return Results.Ok();
-        //    }
-        //    catch (Exception ex) { return Results.Problem(ex.Message); }
-        //}
-
-        // DELETE api/<PlaylistController>/5
-        [HttpDelete("{id}")]
-        public async Task<IResult> Delete(int id, IPlaylistService playlistService)
+        [HttpPut("{id}")]
+        public async Task<IResult> UpdatePlaylistName(int id, [FromBody] string playlistName)
         {
             try
             {
-                PlaylistModel? playlist = await playlistService.GetPlaylistByIdAsync(id);
+                PlaylistModel? playlist = await _playlistService.GetPlaylistByIdAsync(id);
                 if (playlist == null)
                 {
                     return Results.NotFound();
                 }
-                await playlistService.DeletePlaylist(playlist);
+                playlist.Name = playlistName;
+                await _playlistService.UpdatePlaylist(playlist);
+                return Results.Ok();
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
+        }
+
+        // DELETE api/<PlaylistController>/5
+        [HttpDelete("{id}")]
+        public async Task<IResult> DeletePlaylist(int id)
+        {
+            try
+            {
+                PlaylistModel? playlist = await _playlistService.GetPlaylistByIdAsync(id);
+                if (playlist == null)
+                {
+                    return Results.NotFound();
+                }
+                await _playlistService.DeletePlaylist(playlist);
                 return Results.Ok();
             }
             catch (Exception ex) { return Results.Problem(ex.Message); }
         }
 
         [HttpPost("{id}/routes")]
-        public async Task<IResult> AddRouteToPlaylist(int id, [FromBody] string routeUrl, IPlaylistService playlistService)
+        public async Task<IResult> AddRouteToPlaylist(int id, [FromBody] string routeUrl)
         {
             try
             {
-                int newRouteId = await playlistService.AddRouteToPlaylistByUrlAsync(id, routeUrl);
+                int newRouteId = await _playlistService.AddRouteToPlaylistByUrlAsync(id, routeUrl);
                 return newRouteId switch
                 {
                     -1 => Results.NotFound(routeUrl),
@@ -108,11 +116,11 @@ namespace ClimbingPlaylistApi.Controllers
         }
 
         [HttpDelete("{playlistId}/routes/{routeId}")]
-        public async Task<IResult> DeleteRouteFromPlaylist(int playlistId, int routeId, IPlaylistService playlistService)
+        public async Task<IResult> DeleteRouteFromPlaylist(int playlistId, int routeId)
         {
             try
             {
-                var result = await playlistService.DeleteRouteFromPlaylistByUrlAsync(playlistId, routeId);
+                var result = await _playlistService.DeleteRouteFromPlaylistByUrlAsync(playlistId, routeId);
                 return result switch
                 {
                     false => Results.NotFound(),
