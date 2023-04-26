@@ -55,6 +55,10 @@ namespace ClimbingPlaylistApi.Controllers
         {
             try
             {
+                if (string.IsNullOrEmpty(playlistName))
+                {
+                    return Results.BadRequest($"Playlist name cannot be empty.");
+                }
                 int id = await _playlistService.AddNewEmptyPlaylistAsync(playlistName);
                 return Results.Ok(id);
             }
@@ -62,16 +66,20 @@ namespace ClimbingPlaylistApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IResult> UpdatePlaylistName(int id, [FromBody] string playlistName)
+        public async Task<IResult> UpdatePlaylistName(int id, [FromBody] string newPlaylistName)
         {
             try
             {
+                if (string.IsNullOrEmpty(newPlaylistName))
+                {
+                    return Results.BadRequest($"Playlist name cannot be empty.");
+                }
                 PlaylistModel? playlist = await _playlistService.GetPlaylistByIdAsync(id);
                 if (playlist == null)
                 {
                     return Results.NotFound();
                 }
-                playlist.Name = playlistName;
+                playlist.Name = newPlaylistName;
                 await _playlistService.UpdatePlaylist(playlist);
                 return Results.Ok();
             }
