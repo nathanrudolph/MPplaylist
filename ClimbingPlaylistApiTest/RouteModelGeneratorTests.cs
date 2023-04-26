@@ -16,7 +16,7 @@ namespace ClimbingPlaylistApiTest
     {
         private readonly RouteModelHandler _sut;
         private readonly Mock<IDbService> _dbServiceMock = new Mock<IDbService>();
-        private readonly Mock<IMpScraper> _mpScraperMock = new Mock<IMpScraper>();
+        private readonly Mock<IMpScraperAdapter> _mpScraperMock = new Mock<IMpScraperAdapter>();
 
         public RouteModelGeneratorTests() 
         {
@@ -24,35 +24,35 @@ namespace ClimbingPlaylistApiTest
         }
 
         [Fact]
-        public void RouteModelGenerator_ShouldBuildRoute_IfInDb()
+        public async Task RouteModelGenerator_ShouldBuildRoute_IfInDb()
         {
             //Arrange
-            RouteModel expectedRoute = new RouteModel("Armatron", "105809181", "https://www.mountainproject.com/route/105809181/armatron");
-            _dbServiceMock.Setup(x => x.GetRoute("105809181"))
+            RouteModel expectedRoute = new RouteModel()
+            { Name = "Armatron", MpId = "105809181", Url = "https://www.mountainproject.com/route/105809181/armatron" };
+            _dbServiceMock.Setup(x => x.GetRouteByMpIdAsync("105809181").Result)
                 .Returns(expectedRoute);
 
             //Act
-            var result = _sut.GetRoute("https://www.mountainproject.com/route/105809181/armatron");
+            var result = await _sut.GetRoute("https://www.mountainproject.com/route/105809181/armatron");
 
             //Assert
             result.Should().Be(expectedRoute);
         }
 
         [Fact]
-        public void RouteModelGenerator_ShouldBuildRoute_IfNotInDb()
+        public async Task RouteModelGenerator_ShouldBuildRoute_IfNotInDb()
         {
             //Arrange
-            RouteModel expectedRoute = new RouteModel("Armatron", "105809181", "https://www.mountainproject.com/route/105809181/armatron")
-            {
-            };
-            _dbServiceMock.Setup(x => x.GetRoute("105809181"))
-                .Returns(new RouteModel("","",""));
+            RouteModel expectedRoute = new RouteModel()
+            { Name = "Armatron", MpId = "105809181", Url = "https://www.mountainproject.com/route/105809181/armatron" };
+            _dbServiceMock.Setup(x => x.GetRouteByMpIdAsync("105809181").Result)
+                .Returns<RouteModel?>(null);
             _mpScraperMock.Setup(x =>
-                x.GetRouteFromUrl("https://www.mountainproject.com/route/105809181/armatron"))
+                x.GetRouteModelFromUrlAsync("https://www.mountainproject.com/route/105809181/armatron").Result)
                 .Returns(expectedRoute);
 
             //Act
-            var result = _sut.GetRoute("https://www.mountainproject.com/route/105809181/armatron");
+            var result = await _sut.GetRoute("https://www.mountainproject.com/route/105809181/armatron");
 
             //Assert
             result.Should().Be(expectedRoute);

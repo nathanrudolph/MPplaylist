@@ -4,6 +4,6 @@ namespace ClimbingPlaylistApi.Domain
 {
     public interface IRouteModelHandler
     {
-        RouteModel GetRoute(string url);
+        Task<RouteModel?> GetRoute(string url);
     }
 }

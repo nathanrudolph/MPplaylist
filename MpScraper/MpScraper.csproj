@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="AngleSharp">
+      <HintPath>open_source_compiled_project_not_on_nuget\AngleSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Base">
+      <HintPath>open_source_compiled_project_not_on_nuget\Base.dll</HintPath>
+    </Reference>
+    <Reference Include="MountainProjectAPI">
+      <HintPath>open_source_compiled_project_not_on_nuget\MountainProjectAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>open_source_compiled_project_not_on_nuget\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

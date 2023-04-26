@@ -1,8 +1,8 @@
 using ClimbingPlaylistApi.Database;
 using ClimbingPlaylistApi.Domain;
-using ClimbingPlaylistApi.Endpoints;
 using ClimbingPlaylistApi.Services;
 using Microsoft.EntityFrameworkCore;
+using MpScraper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,22 +16,21 @@ builder.Services.AddDbContext<ClimbingDbContext>(options =>
 
 builder.Services.AddScoped<IDbService,DbService>();
 builder.Services.AddScoped<IPlaylistService,PlaylistService>();
-builder.Services.AddTransient<IMpScraper,MpScraper>();
-builder.Services.AddTransient<IRouteModelHandler,RouteModelHandler>();
+builder.Services.AddScoped<IMpScraperAdapter,MpScraperAdapter>();
+builder.Services.AddScoped<IRouteModelHandler,RouteModelHandler>();
+builder.Services.AddScoped<IMpScraper,MpScraper.MpScraper>();
 
-//builder.Services.AddControllers();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
-app.ConnectPlaylistEndpoints();
+app.MapControllers();
 
 //app.UseAuthorization();
-//app.MapControllers();
 
 app.Run();

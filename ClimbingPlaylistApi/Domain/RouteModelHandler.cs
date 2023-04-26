@@ -14,35 +14,29 @@ namespace ClimbingPlaylistApi.Domain
     /// </summary>
     public class RouteModelHandler : IRouteModelHandler
     {
-        public RouteModelHandler(IDbService dbService, IMpScraper mpScraper)
+        public RouteModelHandler(IDbService dbService, IMpScraperAdapter mpScraperAdapter)
         {
             _dbService = dbService;
-            _mpScraper = mpScraper;
+            _mpScraperAdapter = mpScraperAdapter;
         }
 
-        private IDbService _dbService;
-        private IMpScraper _mpScraper;
+        private readonly IDbService _dbService;
+        private readonly IMpScraperAdapter _mpScraperAdapter;
 
         /// <summary>
         /// Returns a RouteModel object for a given MP URL. Will scrape from web if route is not already in db.
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public RouteModel GetRoute(string url)
+        public async Task<RouteModel?> GetRoute(string url)
         {
             RouteUrl routeUrl = new RouteUrl(url);
             string MpId = routeUrl.GetRouteId();
-            var route = _dbService.GetRoute(MpId);
+            var route = await _dbService.GetRouteByMpIdAsync(MpId);
             if (route == null)
             {
-                route = GetRouteFromScraper(url);
+                route = await _mpScraperAdapter.GetRouteModelFromUrlAsync(url);
             }
-            return route;
-        }
-
-        private RouteModel GetRouteFromScraper(string url)
-        {
-            var route = _mpScraper.GetRouteFromUrl(url);
             return route;
         }
     }
